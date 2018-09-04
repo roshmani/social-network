@@ -1,0 +1,80 @@
+import React from "react";
+import axios from "axios";
+
+export default class Registration extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.submit = this.submit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    render() {
+        return (
+            <div className="regForm">
+                {this.state.error && (
+                    <div className="error">
+                        Something went wrong in Registration!!
+                    </div>
+                )}
+                <input
+                    type="text"
+                    name="fname"
+                    onChange={this.handleChange}
+                    placeholder="First name"
+                />
+                <input
+                    type="text"
+                    name="lname"
+                    onChange={this.handleChange}
+                    placeholder="Last name"
+                />
+                <input
+                    type="email"
+                    name="emailid"
+                    onChange={this.handleChange}
+                    placeholder="email-id"
+                />
+                <input
+                    type="password"
+                    name="password"
+                    onChange={this.handleChange}
+                    placeholder="password"
+                />
+                <button
+                    type="submit"
+                    className="regButton"
+                    onClick={this.submit}
+                >
+                    Register
+                </button>
+                <p>
+                    Already a member?,<a href="/login">Log In</a>
+                </p>
+            </div>
+        );
+    }
+
+    /* handles the change of values in input field and assigns to this.corrsponding*/
+    handleChange(e) {
+        this[e.target.name] = e.target.value;
+    }
+    submit() {
+        axios
+            .post("/register", {
+                fname: this.fname,
+                lname: this.lname,
+                emailid: this.emailid,
+                password: this.password
+            })
+            .then(({ data }) => {
+                console.log("outside if!", data.success);
+                if (data.success) {
+                    console.log("do something!", data);
+                    location.replace("/");
+                } else {
+                    this.setState({ error: true });
+                }
+            });
+    }
+}
