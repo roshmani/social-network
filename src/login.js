@@ -1,35 +1,22 @@
 import React from "react";
 import axios from "./axios";
-import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.submit = this.submit.bind(this);
+        this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     render() {
         return (
-            <div className="regForm">
+            <div className="loginForm">
                 {this.state.error && (
                     <div className="error">
-                        Something went wrong in Registration!!
+                        Email-id or password input seems to be wrong!!
                     </div>
                 )}
-                <input
-                    type="text"
-                    name="fname"
-                    onChange={this.handleChange}
-                    placeholder="First name"
-                />
-                <input
-                    type="text"
-                    name="lname"
-                    onChange={this.handleChange}
-                    placeholder="Last name"
-                />
                 <input
                     type="email"
                     name="emailid"
@@ -44,14 +31,11 @@ export default class Registration extends React.Component {
                 />
                 <button
                     type="submit"
-                    className="regButton"
-                    onClick={this.submit}
+                    className="loginButton"
+                    onClick={this.login}
                 >
-                    Register
+                    Log In
                 </button>
-                <p>
-                    Already a member?,<Link to="/login">Log In</Link>
-                </p>
             </div>
         );
     }
@@ -60,18 +44,14 @@ export default class Registration extends React.Component {
     handleChange(e) {
         this[e.target.name] = e.target.value;
     }
-    submit() {
+    login() {
         axios
-            .post("/register", {
-                fname: this.fname,
-                lname: this.lname,
+            .post("/login", {
                 emailid: this.emailid,
                 password: this.password
             })
             .then(({ data }) => {
-                console.log("outside if!", data.success);
                 if (data.success) {
-                    console.log("do something!", data);
                     location.replace("/");
                 } else {
                     this.setState({ error: true });

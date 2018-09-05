@@ -14,3 +14,8 @@ module.exports.regUsers = function(fname, lname, email, password) {
         password || null
     ]);
 };
+
+module.exports.checkEmail = function(emailid) {
+    var query = `SELECT * FROM users WHERE email=$1`;
+    return db.query(query, [emailid]);
+};

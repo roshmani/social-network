@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const compression = require("compression");
 const { hashPass, checkPass } = require("./PwdEncryption");
-const { regUsers } = require("./socialnetworkdb");
+const { regUsers, checkEmail } = require("./socialnetworkdb");
 const { secret } = require("./secrets.json");
+const csurf = require("csurf");
 const cookieSession = require("cookie-session");
 app.use(require("cookie-parser")());
 /*config:body parser*/
@@ -14,7 +15,11 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
-
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 /*************************************************************************************************************************/
 app.use(compression());
 
@@ -45,10 +50,8 @@ app.post("/register", (req, res) => {
         req.body.emailid &&
         req.body.password
     ) {
-        console.log("in here!");
         hashPass(req.body.password)
             .then(function(hashedpwd) {
-                console.log("after hashing in here!", hashedpwd);
                 return regUsers(
                     req.body.fname,
                     req.body.lname,
@@ -70,7 +73,39 @@ app.post("/register", (req, res) => {
         res.json({ success: false });
     }
 });
-
+/******************************Login*******************************************************/
+app.post("/login", (req, res) => {
+    let idval;
+    if (req.body.emailid && req.body.password) {
+        checkEmail(req.body.emailid)
+            .then(function(results) {
+                if (results.rows.length > 0) {
+                    idval = results.rows[0].id;
+                    return checkPass(
+                        req.body.password,
+                        results.rows[0].password
+                    );
+                } else {
+                    throw new Error();
+                }
+            })
+            .then(function(match) {
+                if (match) {
+                    req.session.userId = idval;
+                    res.json({ success: true });
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(function(err) {
+                console.log("Error occured in login:", err);
+                res.json({ success: false });
+            });
+    } else {
+        res.json({ success: false });
+    }
+});
+/***********************************************************************************************************/
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
