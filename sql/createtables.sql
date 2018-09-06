@@ -5,5 +5,6 @@ CREATE TABLE users (
     fname VARCHAR(255) not null,
     lname VARCHAR(255) not null,
     email VARCHAR(255) not null UNIQUE,
-    password  VARCHAR(255) not NULL
+    password  VARCHAR(255) not NULL,
+    imageurl VARCHAR(500)
 );

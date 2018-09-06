@@ -2,7 +2,14 @@ const express = require("express");
 const app = express();
 const compression = require("compression");
 const { hashPass, checkPass } = require("./PwdEncryption");
-const { regUsers, checkEmail } = require("./socialnetworkdb");
+const {
+    regUsers,
+    checkEmail,
+    getUserDetails,
+    updateProfilePic
+} = require("./socialnetworkdb");
+const s3 = require("./s3");
+const config = require("./config");
 const { secret } = require("./secrets.json");
 const csurf = require("csurf");
 const cookieSession = require("cookie-session");
@@ -20,7 +27,32 @@ app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
-/*************************************************************************************************************************/
+/***********************************************************************/
+/*                   File Upload header Declarations                   */
+/***********************************************************************/
+var multer = require("multer");
+var uidSafe = require("uid-safe");
+var path = require("path");
+
+var diskStorage = multer.diskStorage({
+    /*destination: directory to save the files to*/
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+/****************************************************************************************************************/
 app.use(compression());
 
 if (process.env.NODE_ENV != "production") {
@@ -41,7 +73,29 @@ app.get("/Welcome", function(req, res) {
     }
     res.sendFile(__dirname + "/index.html");
 });
-
+/*******************************************************************************************/
+/*                                   get user details                                     */
+/******************************************************************************************/
+app.get("/getUserDetails", (req, res) => {
+    const userid = req.session.userId;
+    getUserDetails(userid)
+        .then(results => {
+            let imageurl = "profilepic.png";
+            if (results.rows[0].imageurl != null) {
+                imageurl = results.rows[0].imageurl;
+            }
+            res.json({
+                id: userid,
+                fname: results.rows[0].fname,
+                lname: results.rows[0].lname,
+                imageUrl: imageurl
+            });
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting user details:", err);
+            res.json({ success: false });
+        });
+});
 app.post("/register", (req, res) => {
     console.log("body:", req.body);
     if (
@@ -75,12 +129,13 @@ app.post("/register", (req, res) => {
 });
 /******************************Login*******************************************************/
 app.post("/login", (req, res) => {
-    let idval;
+    let idval, fname;
     if (req.body.emailid && req.body.password) {
         checkEmail(req.body.emailid)
             .then(function(results) {
                 if (results.rows.length > 0) {
                     idval = results.rows[0].id;
+                    fname = results.rows[0].fname;
                     return checkPass(
                         req.body.password,
                         results.rows[0].password
@@ -92,7 +147,7 @@ app.post("/login", (req, res) => {
             .then(function(match) {
                 if (match) {
                     req.session.userId = idval;
-                    res.json({ success: true });
+                    res.json({ success: true, username: fname });
                 } else {
                     throw new Error();
                 }
@@ -106,6 +161,23 @@ app.post("/login", (req, res) => {
     }
 });
 /***********************************************************************************************************/
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("POST upload!", req.file);
+    let userid = req.session.userId;
+    updateProfilePic(config.s3Url + req.file.filename, userid)
+        .then(({ rows }) => {
+            console.log("rows returned", rows[0]);
+            res.json({
+                image: rows[0].imageurl
+            });
+        })
+        .catch(() => {
+            res.status(500).json({
+                success: false
+            });
+        });
+});
+/*******************************************************************************************************/
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });

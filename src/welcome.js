@@ -6,8 +6,12 @@ import Login from "./login";
 export default function Welcome(props) {
     return (
         <div>
-            <h1>Welcome to</h1>
-            <h1>Family Gaggle</h1>
+            <div
+                className="welcomediv"
+                style={{ flex: 1, flexDirection: "row" }}
+            >
+                <img src="Welcomepic.png" alt="welcomepageimg" />
+            </div>
             <HashRouter>
                 <div>
                     <Route exact path="/" component={Registration} />

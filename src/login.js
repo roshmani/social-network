@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -36,6 +37,9 @@ export default class Login extends React.Component {
                 >
                     Log In
                 </button>
+                <p>
+                    Not Registered yet?..,<Link to="/welcome">Register</Link>
+                </p>
             </div>
         );
     }
@@ -52,6 +56,8 @@ export default class Login extends React.Component {
             })
             .then(({ data }) => {
                 if (data.success) {
+                    this.setState({ fname: data.username });
+                    console.log("fname", this.fname);
                     location.replace("/");
                 } else {
                     this.setState({ error: true });
