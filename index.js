@@ -6,7 +6,8 @@ const {
     regUsers,
     checkEmail,
     getUserDetails,
-    updateProfilePic
+    updateProfilePic,
+    updateUserBio
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -88,7 +89,8 @@ app.get("/getUserDetails", (req, res) => {
                 id: userid,
                 fname: results.rows[0].fname,
                 lname: results.rows[0].lname,
-                imageUrl: imageurl
+                imageUrl: imageurl,
+                bio: results.rows[0].bio
             });
         })
         .catch(function(err) {
@@ -162,7 +164,6 @@ app.post("/login", (req, res) => {
 });
 /***********************************************************************************************************/
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    console.log("POST upload!", req.file);
     let userid = req.session.userId;
     updateProfilePic(config.s3Url + req.file.filename, userid)
         .then(({ rows }) => {
@@ -177,6 +178,21 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             });
         });
 });
+/********************************************************************************************************/
+app.post("/updateBio/:bio", (req, res) => {
+    updateUserBio(req.params.bio, req.session.userId)
+        .then(({ rows }) => {
+            res.json({
+                bio: rows[0].bio
+            });
+        })
+        .catch(() => {
+            res.status(500).json({
+                success: false
+            });
+        });
+});
+
 /*******************************************************************************************************/
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");

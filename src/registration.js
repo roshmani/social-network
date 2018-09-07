@@ -5,7 +5,13 @@ import { Link } from "react-router-dom";
 export default class Registration extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            error: false,
+            fname: "",
+            lnmae: "",
+            emailid: "",
+            password: ""
+        };
         this.submit = this.submit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }

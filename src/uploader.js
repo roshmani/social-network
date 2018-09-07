@@ -6,13 +6,23 @@ export default class Uploader extends React.Component {
         super(props);
         this.state = {};
         this.changeFile = this.changeFile.bind(this);
+        this.closeUploader = this.closeUploader.bind(this);
     }
 
     render() {
         return (
             <div className="uploadprofilepic">
+                <a className="closemodal">
+                    <img
+                        onClick={this.closeUploader}
+                        id="closeicon"
+                        src="dialog_close.ico"
+                        alt="X"
+                    />
+                </a>
+                <p className="uploadtxt">Upload your profile picture?</p>
                 <div className="upload-btn">
-                    <button className="btn">Upload a Profile Picture</button>
+                    <button className="btn">Upload</button>
                     <input onChange={this.changeFile} type="file" id="myfile" />
                 </div>
             </div>
@@ -32,5 +42,9 @@ export default class Uploader extends React.Component {
             .catch(err => {
                 console.log("error in upload files", err);
             });
+    }
+    closeUploader(e) {
+        e.preventDefault();
+        this.props.closeUploader();
     }
 }

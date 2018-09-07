@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            error: "",
+            emailid: "",
+            password: ""
+        };
         this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -38,7 +42,7 @@ export default class Login extends React.Component {
                     Log In
                 </button>
                 <p>
-                    Not Registered yet?..,<Link to="/welcome">Register</Link>
+                    Not Registered yet?..,<Link to="/">Register</Link>
                 </p>
             </div>
         );
