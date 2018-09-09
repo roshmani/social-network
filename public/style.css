@@ -213,3 +213,206 @@ header {
     top: 0;
     opacity: 0;
 }
+/*/////////////////////////  profile display //////////////////////////*/
+
+aside {
+    position: relative;
+    display: block;
+    height: 66vh;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 10vh;
+    text-align: center;
+    padding: 5em;
+    box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+    -webkit-animation: shadow 1s linear forwards;
+    -moz-animation: shadow 1s linear forwards;
+    animation: shadow 1s linear forwards;
+    -webkit-animation-delay: 0.5s;
+    -moz-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+.fa-edit {
+    align-self: center;
+}
+.biodisplaydiv {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.biotxtarea {
+    width: 500px;
+    height: 100px;
+}
+@-moz-keyframes shadow {
+    from {
+        box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        max-width: 0em;
+    }
+    to {
+        box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        max-width: 30em;
+    }
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        max-width: 0em;
+    }
+    to {
+        box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        max-width: 30em;
+    }
+}
+
+@-webkit-keyframes shadow {
+    from {
+        box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -webkit-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -moz-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        -o-box-shadow: 0 0 6em -6em #000000, 0 0 6em -6em #000000;
+        max-width: 0em;
+    }
+    to {
+        box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -webkit-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -moz-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        -o-box-shadow: -4em 0 6em -6em #000000, 4em 0 6em -6em #000000;
+        max-width: 30em;
+    }
+}
+
+profilepicdisplay img {
+    width: 10em;
+    opacity: 0;
+    border-radius: 50%;
+    box-shadow: 0.25em 0.25em 0.75em 0 #999;
+    -webkit-box-shadow: 0.25em 0.25em 0.75em 0 #999;
+    -moz-box-shadow: 0.25em 0.25em 0.75em 0 #999;
+    -o-box-shadow: 0.25em 0.25em 0.75em 0 #999;
+    -webkit-animation: circle 0.5s linear forwards;
+    -moz-animation: circle 0.5s linear forwards;
+    animation: circle 0.5s linear forwards;
+    -webkit-animation-delay: 2s;
+    -moz-animation-delay: 2s;
+    animation-delay: 2s;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -kthtml-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+@-webkit-keyframes circle {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+@-moz-keyframes circle {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+@keyframes circle {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+profilepicdisplay img:hover {
+    box-shadow: -0.25em 0.25em 0.75em 0 #999;
+    -webkit-box-shadow: 0em 0em 1em 0 #999;
+    -moz-box-shadow: -0.25em 0.25em 0.75em 0 #999;
+    -o-box-shadow: -0.25em 0.25em 0.75em 0 #999;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -kthtml-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+profilepicdisplay {
+    font: 1.25em/1em poiret one, sans-serif;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+}
+
+profilepicdisplay h2 {
+    font-size: 0.75em;
+}
+
+.profilebio {
+    font: 1.3em/1.25em open sans, sans-serif;
+    font-variant: small-caps;
+    letter-spacing: 0.025em;
+    margin-top: 2em;
+}
+
+.profilepicdisplay h1,
+.profilepicdisplay h2,
+div {
+    opacity: 0;
+    -webkit-animation: fade 1s linear forwards;
+    -moz-animation: fade 1s linear forwards;
+    animation: fade 1s linear forwards;
+    -webkit-animation-delay: 2s;
+    -moz-animation-delay: 2s;
+    animation-delay: 2s;
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+@-moz-keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+/**********************************************************************/
