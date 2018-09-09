@@ -55,7 +55,6 @@ export default class SocialMediaApp extends React.Component {
             axios
                 .post("/updateBio/" + e.target.value)
                 .then(({ data }) => {
-                    console.log("my bio", data.bio);
                     this.setState({
                         bio: data.bio,
                         showBio: false
@@ -73,19 +72,22 @@ export default class SocialMediaApp extends React.Component {
         const { fname, lname, imageUrl, bio, showBio } = this.state;
         return (
             <div className="mainAppdiv">
-                <Logo />
-                <ProfilePic
-                    imageUrl={imageUrl}
-                    fname={fname}
-                    lname={lname}
-                    clickHandler={this.makeUploaderVisible}
-                />
+                <div className="headerdiv">
+                    <Logo />
+                    <ProfilePic
+                        imageUrl={imageUrl}
+                        fname={fname}
+                        lname={lname}
+                        clickHandler={this.makeUploaderVisible}
+                    />
+                </div>
                 {this.state.uploaderIsVisible && (
                     <Uploader
                         updateImage={this.updateImage}
                         closeUploader={this.makeUploaderInvisible}
                     />
                 )}
+
                 <BrowserRouter>
                     <Route
                         path="/"

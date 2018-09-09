@@ -14,14 +14,14 @@ export default class Profile extends Component {
         } = this.props;
 
         return (
-            <div className="child">
+            <div className="Profilediv">
                 <div className="left">
                     <h1>
                         {fname} {lname}
                     </h1>
 
                     {bio ? (
-                        <div>
+                        <div className="biodisplaydiv">
                             <p className="displayBio">{bio}</p>
                             <button onClick={toggleBio}>Edit Bio</button>
                         </div>
@@ -33,7 +33,7 @@ export default class Profile extends Component {
                         <textarea onKeyDown={setBio} defaultValue={bio} />
                     )}
                 </div>
-                <div className="right">
+                <div className="profileimgdiv">
                     <img
                         className="profileimage"
                         onClick={clickHandler}

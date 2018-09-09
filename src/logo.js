@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Logo(props) {
+export default function Logo() {
     return (
         <div className="logodiv">
-            <h1>Family Gaggle</h1>
+            <img className="logoimg" src="logo.png" />
         </div>
     );
 }

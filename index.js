@@ -68,6 +68,11 @@ if (process.env.NODE_ENV != "production") {
 }
 app.use(express.static("public"));
 
+app.get("/logout", function(request, response) {
+    request.session = null;
+    response.redirect("/");
+});
+
 app.get("/Welcome", function(req, res) {
     if (req.session.userId) {
         return res.redirect("/");

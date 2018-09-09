@@ -6,6 +6,7 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            logged: false,
             error: "",
             emailid: "",
             password: ""
@@ -22,6 +23,7 @@ export default class Login extends React.Component {
                         Email-id or password input seems to be wrong!!
                     </div>
                 )}
+                <h2 className="titletxt">LOGIN</h2>
                 <input
                     type="email"
                     name="emailid"
@@ -60,8 +62,7 @@ export default class Login extends React.Component {
             })
             .then(({ data }) => {
                 if (data.success) {
-                    this.setState({ fname: data.username });
-                    console.log("fname", this.fname);
+                    this.setState({ fname: data.username, logged: true });
                     location.replace("/");
                 } else {
                     this.setState({ error: true });

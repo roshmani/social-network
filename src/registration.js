@@ -6,6 +6,7 @@ export default class Registration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            logged: false,
             error: false,
             fname: "",
             lnmae: "",
@@ -24,6 +25,7 @@ export default class Registration extends React.Component {
                         Something went wrong in Registration!!
                     </div>
                 )}
+                <h2 className="titletxt">CREATE YOUR ACCOUNT</h2>
                 <input
                     type="text"
                     name="fname"
@@ -75,9 +77,8 @@ export default class Registration extends React.Component {
                 password: this.password
             })
             .then(({ data }) => {
-                console.log("outside if!", data.success);
                 if (data.success) {
-                    console.log("do something!", data);
+                    this.setState({ logged: true });
                     location.replace("/");
                 } else {
                     this.setState({ error: true });

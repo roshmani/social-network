@@ -1,44 +1,176 @@
+/*to use this font*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body {
+    font-family: montserrat, arial, verdana;
+}
+
 input {
     display: block;
 }
-.mainAppdiv {
-    display: inline;
+main {
+    text-align: center;
+    margin: 0;
+    min-width: 100vh;
+    min-height: 100vh;
+}
+.welcomediv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+/*.welcomediv img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+}*/
+header {
+    padding: 10px;
+    height: 100px;
     width: 100%;
+    background-color: #44f0e5;
+}
+
+.logoimg {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+.logotxt {
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+.navbar {
+    float: right;
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+.navbar li {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5em;
+    line-height: 35px;
+    height: 35px;
+    float: left;
+    padding: 12px;
+    margin-right: 10px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    transition: 0.3s background-color;
+    text-align: left;
+}
+
+.navbar a:hover {
+    background-color: #a9a9a9;
+}
+
+.navbar a.active {
+    background-color: #fff;
+    color: #444;
+    cursor: default;
+}
+.headerdiv {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    background-color: #44f0e5;
 }
 .userloggeddiv {
+    right: 5px;
+    position: absolute;
+    display: flex;
     float: right;
+    margin-left: auto;
+    justify-content: space-around;
+    align-items: center;
+    width: 200px;
+    height: 100px;
+}
+.userlogged {
+    align-self: center;
 }
 .logodiv {
+    border-radius: 50%;
     float: left;
-    justify-content: flex-start;
+    justify-content: space-around;
+    height: 100px;
+    width: 100px;
 }
 .imgdiv {
-    border-radius: 50%;
-    border: 1px solid blue;
-    width: 70px;
-    height: 70px;
+    align-self: center;
 }
 .profilepic {
-    padding: 10px;
     width: 50px;
     height: 50px;
+    border-radius: 50%;
+    border: 10px solid white;
 }
 
 .profileimage {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 .username {
     display: inline;
 }
-.regForm {
-    text-align: center;
+.regForm,
+.loginForm {
+    background: white;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    width: 50%;
+    margin: 10% 10% 30% 20%;
+    /*stacking fieldsets above each other*/
+    position: relative;
+    text-align: center !important;
+}
+.loginForm {
+    width: 30%;
+    margin: 10% 10% 40% 30%;
+}
+.regForm input,
+.loginForm input {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 95%;
+    font-family: montserrat;
+    color: #2c3e50;
+    font-size: 13px;
+}
+.regButton,
+.loginButton {
+    width: 100px;
+    background: #27ada9;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
 }
 
+.titletxt {
+    font-size: 15px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
 .upload-btn {
     position: relative;
     overflow: hidden;
     display: inline-block;
+    margin-top: 5%;
 }
 .uploadprofilepic {
     position: fixed;
