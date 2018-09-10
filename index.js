@@ -83,26 +83,19 @@ app.get("/Welcome", function(req, res) {
 /*                                   get user details                                     */
 /******************************************************************************************/
 app.get("/getUserDetails", (req, res) => {
-    const userid = req.session.userId;
-    getUserDetails(userid)
-        .then(results => {
-            let imageurl = "profilepic.png";
-            if (results.rows[0].imageurl != null) {
-                imageurl = results.rows[0].imageurl;
-            }
-            res.json({
-                id: userid,
-                fname: results.rows[0].fname,
-                lname: results.rows[0].lname,
-                imageUrl: imageurl,
-                bio: results.rows[0].bio
-            });
-        })
-        .catch(function(err) {
-            console.log("Error occured in getting user details:", err);
-            res.json({ success: false });
-        });
+    const userId = req.session.userId;
+    return getUserInfo(req, res, userId).then(userinfo => {
+        res.json(userinfo);
+    });
 });
+/*******************************************************************************************************/
+app.get("/getSearchedUser/:userId", (req, res) => {
+    const userId = req.params.userId;
+    return getUserInfo(req, res, userId).then(userinfo => {
+        res.json(userinfo);
+    });
+});
+/*******************************************************************************************************/
 app.post("/register", (req, res) => {
     console.log("body:", req.body);
     if (
@@ -202,6 +195,28 @@ app.post("/updateBio/:bio", (req, res) => {
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
+
+function getUserInfo(req, res, userId) {
+    return getUserDetails(userId)
+        .then(results => {
+            let imageurl = "profilepic.png";
+            if (results.rows[0].imageurl != null) {
+                imageurl = results.rows[0].imageurl;
+            }
+
+            return {
+                id: userId,
+                fname: results.rows[0].fname,
+                lname: results.rows[0].lname,
+                imageUrl: imageurl,
+                bio: results.rows[0].bio
+            };
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting user details:", err);
+            res.json({ success: false });
+        });
+}
 
 app.listen(8080, function() {
     console.log("I'm listening.");

@@ -5,6 +5,7 @@ import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./Profile";
+import SearchedProfile from "./searchedprofile";
 
 export default class SocialMediaApp extends React.Component {
     constructor(props) {
@@ -89,21 +90,29 @@ export default class SocialMediaApp extends React.Component {
                 )}
 
                 <BrowserRouter>
-                    <Route
-                        path="/"
-                        render={() => (
-                            <Profile
-                                fname={fname}
-                                lname={lname}
-                                imageUrl={imageUrl}
-                                bio={bio}
-                                toggleBio={this.toggleBio}
-                                setBio={this.setBio}
-                                showBio={showBio}
-                                clickHandler={this.makeUploaderVisible}
-                            />
-                        )}
-                    />
+                    <div>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Profile
+                                    fname={fname}
+                                    lname={lname}
+                                    imageUrl={imageUrl}
+                                    bio={bio}
+                                    toggleBio={this.toggleBio}
+                                    setBio={this.setBio}
+                                    showBio={showBio}
+                                    clickHandler={this.makeUploaderVisible}
+                                />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/user/:userId"
+                            component={SearchedProfile}
+                        />
+                    </div>
                 </BrowserRouter>
             </div>
         );
