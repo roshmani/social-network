@@ -8,10 +8,12 @@ export default class FriendButton extends Component {
             buttonText: "Add as Friend",
             status: null,
             sender_id: "",
-            receiver_id: ""
+            receiver_id: "",
+            id: ""
         };
         this.makeFriendRequest = this.makeFriendRequest.bind(this);
         this.changeButtonText = this.changeButtonText.bind(this);
+        this.deleteFriendship = this.deleteFriendship.bind(this);
     }
     componentDidMount() {
         axios
@@ -19,11 +21,7 @@ export default class FriendButton extends Component {
             .then(({ data }) => {
                 console.log("in mount button", data);
                 this.setState(data);
-                this.changeButtonText(
-                    this.state.sender_id,
-                    this.state.receiver_id,
-                    this.state.status
-                );
+                this.changeButtonText();
             })
             .catch(err => {
                 console.log("Error in getting status:", err);
@@ -42,23 +40,40 @@ export default class FriendButton extends Component {
         );
     }
     makeFriendRequest() {
-        axios
-            .post(`/addFriend/${this.props.searchedId}`)
-            .then(() => {
-                this.changeButtonText(
-                    this.state.sender_id,
-                    this.state.receiver_id,
-                    this.state.status
-                );
-            })
-            .catch(err => {
-                console.log("Error in inserting into frienships:", err);
-            });
+        const { receiver_id, status } = this.state;
+        if (!status) {
+            axios
+                .post(`/addFriend/${this.props.searchedId}`)
+                .then(({ data }) => {
+                    this.setState(data);
+                    this.changeButtonText();
+                })
+                .catch(err => {
+                    console.log("Error in inserting into frienships:", err);
+                });
+        } else if (status == 1) {
+            if (this.props.searchedId == receiver_id) {
+                this.deleteFriendship();
+            } else {
+                console.log("in update:", this.state.id);
+                /*axios
+                    .post(`/updateFriendRequest/${this.state.Id}`)
+                    .then(({ data }) => {
+                        this.setState(data);
+                        this.changeButtonText();
+                    })
+                    .catch(err => {
+                        console.log("Error in inserting into frienships:", err);
+                    });*/
+            }
+        } else if (status == 2) {
+            this.deleteFriendship();
+        }
     }
-    changeButtonText(senderid, receiverid, status) {
+    changeButtonText() {
+        const { receiver_id, status } = this.state;
         if (status == 1) {
-            console.log("in 1");
-            if (this.props.searchedId == receiverid) {
+            if (this.props.searchedId == receiver_id) {
                 this.setState({ buttonText: "Cancel Request" });
             } else {
                 this.setState({ buttonText: "Accept Request" });
@@ -68,5 +83,17 @@ export default class FriendButton extends Component {
         } else {
             this.setState({ buttonText: "Add as Friend" });
         }
+    }
+
+    deleteFriendship() {
+        axios
+            .post(`/deleteFriendRequest/${this.state.Id}`)
+            .then(() => {
+                this.setState({ status: null });
+                this.changeButtonText();
+            })
+            .catch(err => {
+                console.log("Error in inserting into frienships:", err);
+            });
     }
 }

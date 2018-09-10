@@ -35,7 +35,7 @@ module.exports.getUserDetails = function(userid) {
 };
 
 module.exports.getRequestStatus = function(userid, searchedid) {
-    var query = `SELECT receiver_id ,sender_id ,status
+    var query = `SELECT id,receiver_id ,sender_id ,status
     FROM friendships
     WHERE (receiver_id=$1 and sender_id=$2)
     OR (receiver_id= $2 and sender_id=$1)`;
@@ -50,4 +50,14 @@ module.exports.updateProfilePic = function(imgurl, userid) {
 module.exports.updateUserBio = function(bio, userid) {
     var query = `UPDATE users SET bio=$1 WHERE id=$2 RETURNING bio`;
     return db.query(query, [bio, userid]);
+};
+
+module.exports.updateFriendshipRequest = function(id) {
+    var query = `UPDATE friendships SET status=2 WHERE id=$1 RETURNING *`;
+    return db.query(query, [id]);
+};
+
+module.exports.deleteFriendRequest = function(id) {
+    var query = `DELETE from friendships WHERE id=$1`;
+    return db.query(query, [id]);
 };

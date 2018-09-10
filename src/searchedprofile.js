@@ -6,6 +6,7 @@ export default class SearchedProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.fetchData = this.fetchData.bind(this);
     }
     componentDidMount() {
         console.log("in other profile", this.props.match.params.userId);

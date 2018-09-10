@@ -9,7 +9,9 @@ const {
     updateProfilePic,
     updateUserBio,
     addFriendship,
-    getRequestStatus
+    getRequestStatus,
+    deleteFriendRequest,
+    updateFriendshipRequest
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -211,8 +213,12 @@ app.post("/updateBio/:bio", (req, res) => {
 app.post("/addFriend/:searchedId", (req, res) => {
     addFriendship(req.session.userId, req.params.searchedId)
         .then(({ rows }) => {
+            const { id, sender_id, receiver_id, status } = rows[0];
             res.json({
-                bio: rows[0].bio
+                id,
+                sender_id,
+                receiver_id,
+                status
             });
         })
         .catch(() => {
@@ -222,6 +228,40 @@ app.post("/addFriend/:searchedId", (req, res) => {
         });
 });
 /*******************************************************************************************************/
+app.post("/deleteFriendRequest/:Id", (req, res) => {
+    deleteFriendRequest(req.params.Id)
+        .then(() => {
+            res.json({
+                success: true
+            });
+        })
+        .catch(err => {
+            console.log("Error in deleting Friendship", err);
+            res.status(500).json({
+                success: false
+            });
+        });
+});
+/*******************************************************************************************************/
+app.post("/updateFriendRequest/:Id", (req, res) => {
+    updateFriendshipRequest(req.params.Id)
+        .then(({ rows }) => {
+            const { id, sender_id, receiver_id, status } = rows[0];
+            res.json({
+                id: id,
+                sender_id: sender_id,
+                receiver_id: receiver_id,
+                status: status
+            });
+        })
+        .catch(() => {
+            res.status(500).json({
+                success: false
+            });
+        });
+});
+/*******************************************************************************************************/
+
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
