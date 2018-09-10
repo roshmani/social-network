@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -8,4 +9,11 @@ CREATE TABLE users (
     password  VARCHAR(255) not NULL,
     imageurl VARCHAR(500),
     bio VARCHAR(1000)
+);
+
+CREATE TABLE friendships(
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL REFERENCES users(id),
+    receiver_id INTEGER NOT NULL REFERENCES users(id),
+    status INTEGER NOT NULL DEFAULT 1
 );

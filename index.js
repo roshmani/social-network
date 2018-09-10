@@ -7,7 +7,9 @@ const {
     checkEmail,
     getUserDetails,
     updateProfilePic,
-    updateUserBio
+    updateUserBio,
+    addFriendship,
+    getRequestStatus
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -94,6 +96,21 @@ app.get("/getSearchedUser/:userId", (req, res) => {
     return getUserInfo(req, res, userId).then(userinfo => {
         res.json(userinfo);
     });
+});
+/*******************************************************************************************************/
+app.get("/FriendRequestStatus/:searchedId", (req, res) => {
+    getRequestStatus(req.session.userId, req.params.searchedId)
+        .then(results => {
+            res.json({
+                sender_id: results.rows[0].sender_id,
+                receiver_id: results.rows[0].receiver_id,
+                status: results.rows[0].status
+            });
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting user details:", err);
+            res.json({ success: false });
+        });
 });
 /*******************************************************************************************************/
 app.post("/register", (req, res) => {
@@ -190,7 +207,20 @@ app.post("/updateBio/:bio", (req, res) => {
             });
         });
 });
-
+/*******************************************************************************************************/
+app.post("/addFriend/:searchedId", (req, res) => {
+    addFriendship(req.session.userId, req.params.searchedId)
+        .then(({ rows }) => {
+            res.json({
+                bio: rows[0].bio
+            });
+        })
+        .catch(() => {
+            res.status(500).json({
+                success: false
+            });
+        });
+});
 /*******************************************************************************************************/
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");

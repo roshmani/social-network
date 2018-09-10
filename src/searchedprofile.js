@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "./axios";
-import { Link } from "react-router-dom";
+import FriendButton from "./friendbutton";
 
 export default class SearchedProfile extends Component {
     constructor(props) {
@@ -9,22 +9,13 @@ export default class SearchedProfile extends Component {
     }
     componentDidMount() {
         console.log("in other profile", this.props.match.params.userId);
-        axios
-            .get(`/getSearchedUser/${this.props.match.params.userId}`)
-            .then(({ data }) => {
-                console.log("data in searched profile", data);
-                this.setState(data);
-            })
-            .catch(err => {
-                console.log("Error in getting searched user Details:", err);
-            });
+        this.fetchData(this.props.match.params.userId);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.match.params.userId != this.props.match.params.userId) {
             //Fetch user 10 info (the this.props.match.params.id)
             this.fetchData(nextProps.match.params.userId);
-            console.log("something!");
         } else {
             this.props.history.push("/");
         }
@@ -62,11 +53,7 @@ export default class SearchedProfile extends Component {
                         <p>No Bio yet..</p>
                     )}
                 </div>
-                <Link to="/user/1">Click to User1!</Link>
-                <br />
-                <Link to="/user/2">Click to User2!</Link>
-                <br />
-                <Link to="/user/3">Click to User3!</Link>
+                <FriendButton searchedId={this.props.match.params.userId} />
             </aside>
         );
     }
