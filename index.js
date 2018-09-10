@@ -66,7 +66,7 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-app.use(express.static("public"));
+app.use(express.static("./public"));
 
 app.get("/logout", function(request, response) {
     request.session = null;
@@ -199,7 +199,7 @@ app.get("*", function(req, res) {
 function getUserInfo(req, res, userId) {
     return getUserDetails(userId)
         .then(results => {
-            let imageurl = "profilepic.png";
+            let imageurl = "/profilepic.png";
             if (results.rows[0].imageurl != null) {
                 imageurl = results.rows[0].imageurl;
             }
