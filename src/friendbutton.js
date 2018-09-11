@@ -9,7 +9,7 @@ export default class FriendButton extends Component {
             status: null,
             sender_id: "",
             receiver_id: "",
-            id: ""
+            id: null
         };
         this.makeFriendRequest = this.makeFriendRequest.bind(this);
         this.changeButtonText = this.changeButtonText.bind(this);
@@ -40,6 +40,7 @@ export default class FriendButton extends Component {
         );
     }
     makeFriendRequest() {
+        console.log("out update:", this.state);
         const { receiver_id, status } = this.state;
         if (!status) {
             axios
@@ -55,16 +56,16 @@ export default class FriendButton extends Component {
             if (this.props.searchedId == receiver_id) {
                 this.deleteFriendship();
             } else {
-                console.log("in update:", this.state.id);
-                /*axios
-                    .post(`/updateFriendRequest/${this.state.Id}`)
+                console.log("in update:", this.state);
+                axios
+                    .post(`/updateFriendRequest/${this.state.id}`)
                     .then(({ data }) => {
                         this.setState(data);
                         this.changeButtonText();
                     })
                     .catch(err => {
                         console.log("Error in inserting into frienships:", err);
-                    });*/
+                    });
             }
         } else if (status == 2) {
             this.deleteFriendship();
@@ -87,7 +88,7 @@ export default class FriendButton extends Component {
 
     deleteFriendship() {
         axios
-            .post(`/deleteFriendRequest/${this.state.Id}`)
+            .post(`/deleteFriendRequest/${this.state.id}`)
             .then(() => {
                 this.setState({ status: null });
                 this.changeButtonText();

@@ -104,6 +104,7 @@ app.get("/FriendRequestStatus/:searchedId", (req, res) => {
     getRequestStatus(req.session.userId, req.params.searchedId)
         .then(results => {
             res.json({
+                id: results.rows[0].id,
                 sender_id: results.rows[0].sender_id,
                 receiver_id: results.rows[0].receiver_id,
                 status: results.rows[0].status
@@ -228,8 +229,8 @@ app.post("/addFriend/:searchedId", (req, res) => {
         });
 });
 /*******************************************************************************************************/
-app.post("/deleteFriendRequest/:Id", (req, res) => {
-    deleteFriendRequest(req.params.Id)
+app.post("/deleteFriendRequest/:id", (req, res) => {
+    deleteFriendRequest(req.params.id)
         .then(() => {
             res.json({
                 success: true
