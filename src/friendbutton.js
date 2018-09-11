@@ -16,16 +16,12 @@ export default class FriendButton extends Component {
         this.deleteFriendship = this.deleteFriendship.bind(this);
     }
     componentDidMount() {
+        console.log("this state in mount", this.state);
         axios
             .get(`/FriendRequestStatus/${this.props.searchedId}`)
             .then(({ data }) => {
-                if (data) {
-                    console.log("in data");
-                    this.setState(data);
-                    this.changeButtonText();
-                } else {
-                    console.log("no data");
-                }
+                this.setState(data);
+                this.changeButtonText();
             })
             .catch(err => {
                 console.log("Error in getting status:", err);

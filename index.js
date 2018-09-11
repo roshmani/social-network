@@ -95,9 +95,13 @@ app.get("/getUserDetails", (req, res) => {
 /*******************************************************************************************************/
 app.get("/getSearchedUser/:userId", (req, res) => {
     const userId = req.params.userId;
-    return getUserInfo(req, res, userId).then(userinfo => {
-        res.json(userinfo);
-    });
+    if (userId == req.session.userId) {
+        res.json({ redirect: true });
+    } else {
+        return getUserInfo(req, res, userId).then(userinfo => {
+            res.json(userinfo);
+        });
+    }
 });
 /*******************************************************************************************************/
 app.get("/FriendRequestStatus/:searchedId", (req, res) => {
@@ -110,6 +114,8 @@ app.get("/FriendRequestStatus/:searchedId", (req, res) => {
                     receiver_id: results.rows[0].receiver_id,
                     status: results.rows[0].status
                 });
+            } else {
+                res.json({ status: null });
             }
         })
         .catch(function(err) {

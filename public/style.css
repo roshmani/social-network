@@ -158,7 +158,9 @@ button {
     padding: 10px 5px;
     margin: 10px 5px;
 }
-
+.friendbutton {
+    width: 150px;
+}
 .titletxt {
     font-size: 15px;
     color: #2c3e50;
