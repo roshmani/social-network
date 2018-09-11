@@ -103,21 +103,22 @@ app.get("/getSearchedUser/:userId", (req, res) => {
 app.get("/FriendRequestStatus/:searchedId", (req, res) => {
     getRequestStatus(req.session.userId, req.params.searchedId)
         .then(results => {
-            res.json({
-                id: results.rows[0].id,
-                sender_id: results.rows[0].sender_id,
-                receiver_id: results.rows[0].receiver_id,
-                status: results.rows[0].status
-            });
+            if (results.rows.length > 0) {
+                res.json({
+                    id: results.rows[0].id,
+                    sender_id: results.rows[0].sender_id,
+                    receiver_id: results.rows[0].receiver_id,
+                    status: results.rows[0].status
+                });
+            }
         })
         .catch(function(err) {
-            console.log("Error occured in getting user details:", err);
+            console.log("Error occured in getting friendship details:", err);
             res.json({ success: false });
         });
 });
 /*******************************************************************************************************/
 app.post("/register", (req, res) => {
-    console.log("body:", req.body);
     if (
         req.body.fname &&
         req.body.lname &&
@@ -134,7 +135,6 @@ app.post("/register", (req, res) => {
                 );
             })
             .then(function(userid) {
-                console.log("user id:", userid.rows[0].id);
                 req.session.userId = userid.rows[0].id;
                 res.json({ success: true });
             })
@@ -143,7 +143,6 @@ app.post("/register", (req, res) => {
                 res.json({ success: false });
             });
     } else {
-        console.log("else run");
         res.json({ success: false });
     }
 });
@@ -185,7 +184,6 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     let userid = req.session.userId;
     updateProfilePic(config.s3Url + req.file.filename, userid)
         .then(({ rows }) => {
-            console.log("rows returned", rows[0]);
             res.json({
                 image: rows[0].imageurl
             });

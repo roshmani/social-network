@@ -19,9 +19,13 @@ export default class FriendButton extends Component {
         axios
             .get(`/FriendRequestStatus/${this.props.searchedId}`)
             .then(({ data }) => {
-                console.log("in mount button", data);
-                this.setState(data);
-                this.changeButtonText();
+                if (data) {
+                    console.log("in data");
+                    this.setState(data);
+                    this.changeButtonText();
+                } else {
+                    console.log("no data");
+                }
             })
             .catch(err => {
                 console.log("Error in getting status:", err);
@@ -40,7 +44,6 @@ export default class FriendButton extends Component {
         );
     }
     makeFriendRequest() {
-        console.log("out update:", this.state);
         const { receiver_id, status } = this.state;
         if (!status) {
             axios
@@ -56,7 +59,6 @@ export default class FriendButton extends Component {
             if (this.props.searchedId == receiver_id) {
                 this.deleteFriendship();
             } else {
-                console.log("in update:", this.state);
                 axios
                     .post(`/updateFriendRequest/${this.state.id}`)
                     .then(({ data }) => {

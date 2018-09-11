@@ -147,8 +147,7 @@ header {
     color: #2c3e50;
     font-size: 13px;
 }
-.regButton,
-.loginButton {
+button {
     width: 100px;
     background: #27ada9;
     font-weight: bold;
