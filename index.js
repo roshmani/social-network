@@ -11,7 +11,8 @@ const {
     addFriendship,
     getRequestStatus,
     deleteFriendRequest,
-    updateFriendshipRequest
+    updateFriendshipRequest,
+    getFriendsWannabes
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -113,6 +114,23 @@ app.get("/FriendRequestStatus/:searchedId", (req, res) => {
                     sender_id: results.rows[0].sender_id,
                     receiver_id: results.rows[0].receiver_id,
                     status: results.rows[0].status
+                });
+            } else {
+                res.json({ status: null });
+            }
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting friendship details:", err);
+            res.json({ success: false });
+        });
+});
+/*******************************************************************************************************/
+app.get("/getFriendsWannabes", (req, res) => {
+    getFriendsWannabes(req.session.userId)
+        .then(results => {
+            if (results.rows.length > 0) {
+                res.json({
+                    friends: results.rows
                 });
             } else {
                 res.json({ status: null });
@@ -248,8 +266,9 @@ app.post("/deleteFriendRequest/:id", (req, res) => {
         });
 });
 /*******************************************************************************************************/
-app.post("/updateFriendRequest/:Id", (req, res) => {
-    updateFriendshipRequest(req.params.Id)
+app.post("/updateFriendRequest/:id", (req, res) => {
+    console.log("update friend request", req.params.id);
+    updateFriendshipRequest(req.params.id)
         .then(({ rows }) => {
             const { id, sender_id, receiver_id, status } = rows[0];
             res.json({

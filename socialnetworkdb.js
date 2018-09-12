@@ -42,6 +42,16 @@ module.exports.getRequestStatus = function(userid, searchedid) {
     return db.query(query, [userid, searchedid]);
 };
 
+module.exports.getFriendsWannabes = function(receiverid) {
+    var query = ` SELECT users.id, fname, lname, imageurl, status
+    FROM friendships
+    JOIN users
+    ON (status = 1 AND receiver_id = $1 AND sender_id = users.id)
+    OR (status = 2 AND receiver_id = $1 AND sender_id = users.id)
+    OR (status = 2 AND sender_id = $1 AND receiver_id = users.id)`;
+    return db.query(query, [receiverid]);
+};
+
 module.exports.updateProfilePic = function(imgurl, userid) {
     var query = `UPDATE users SET imageurl=$1 WHERE id=$2 RETURNING imageurl`;
     return db.query(query, [imgurl, userid]);
@@ -53,11 +63,11 @@ module.exports.updateUserBio = function(bio, userid) {
 };
 
 module.exports.updateFriendshipRequest = function(id) {
-    var query = `UPDATE friendships SET status=2 WHERE id=$1 RETURNING *`;
+    var query = `UPDATE friendships SET status=2 WHERE sender_id=$1 RETURNING *`;
     return db.query(query, [id]);
 };
 
 module.exports.deleteFriendRequest = function(id) {
-    var query = `DELETE from friendships WHERE id=$1`;
+    var query = `DELETE from friendships WHERE sender_id=$1`;
     return db.query(query, [id]);
 };

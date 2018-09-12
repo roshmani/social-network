@@ -6,6 +6,7 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./Profile";
 import SearchedProfile from "./searchedprofile";
+import Friends from "./friends";
 
 export default class SocialMediaApp extends React.Component {
     constructor(props) {
@@ -112,6 +113,7 @@ export default class SocialMediaApp extends React.Component {
                             path="/user/:userId"
                             component={SearchedProfile}
                         />
+                        <Route exact path="/friends" component={Friends} />
                     </div>
                 </BrowserRouter>
             </div>
