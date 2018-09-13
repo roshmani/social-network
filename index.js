@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+//const server = require("http").server(app);
+//const io = require("socket.io")(server, { origins: "localhost:8080" });
 const compression = require("compression");
 const { hashPass, checkPass } = require("./PwdEncryption");
 const {
@@ -155,7 +157,8 @@ app.post("/register", (req, res) => {
                     req.body.fname,
                     req.body.lname,
                     req.body.emailid,
-                    hashedpwd
+                    hashedpwd,
+                    "/profilepic.png"
                 );
             })
             .then(function(userid) {
@@ -315,3 +318,10 @@ function getUserInfo(req, res, userId) {
 app.listen(8080, function() {
     console.log("I'm listening.");
 });
+
+/*io.on("connection", socket => {
+    console.log(`socket with the id ${socket.id} is now connected`);
+    socket.on("disconnect", () => {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+});*/

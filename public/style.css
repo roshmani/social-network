@@ -14,17 +14,37 @@ main {
     min-width: 100vh;
     min-height: 100vh;
 }
+.landingpagediv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
 .welcomediv {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    width: 60%;
+}
+.signinbtn {
+    align-self: flex-end;
+    float: right;
+    right: 5px;
+}
+.logobrand {
+    width: 40%;
 }
 /*.welcomediv img {
     flex-shrink: 0;
     min-width: 100%;
     min-height: 100%;
 }*/
+.signbtn:focus .landing {
+    visibility: hidden;
+}
 header {
     padding: 10px;
     height: 100px;
@@ -206,7 +226,32 @@ button {
     font-size: 20px;
     font-weight: bold;
 }
-
+.friendsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.somefriend {
+    width: 100px;
+    height: 100px;
+}
+figure {
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    font-style: italic;
+    font-size: smaller;
+    text-indent: 0;
+    border: thin silver solid;
+    margin: 0.5em;
+    padding: 0.5em;
+}
+.friends,
+.pendingfriends {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 .upload-btn input[type="file"] {
     font-size: 100px;
     position: absolute;
@@ -310,9 +355,9 @@ profilepicdisplay img {
     -webkit-animation: circle 0.25s linear forwards;
     -moz-animation: circle 0.25s linear forwards;
     animation: circle 0.25s linear forwards;
-    -webkit-animation-delay: 2s;
-    -moz-animation-delay: 2s;
-    animation-delay: 2s;
+    -webkit-animation-delay: 1s;
+    -moz-animation-delay: 1s;
+    animation-delay: 1s;
     -webkit-transition: all 0.25s ease;
     -o-transition: all 0.25s ease;
     -moz-transition: all 0.25s ease;
@@ -385,9 +430,9 @@ div {
     -webkit-animation: fade 1s linear forwards;
     -moz-animation: fade 1s linear forwards;
     animation: fade 1s linear forwards;
-    -webkit-animation-delay: 2s;
-    -moz-animation-delay: 2s;
-    animation-delay: 2s;
+    -webkit-animation-delay: 1s;
+    -moz-animation-delay: 1s;
+    animation-delay: 1s;
 }
 
 @-webkit-keyframes fade {

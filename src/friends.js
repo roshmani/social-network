@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getFriendsWannabes, acceptFriendRequests, unfriend } from "./actions";
+import { Link } from "react-router-dom";
 
 class Friends extends Component {
     constructor(props) {
@@ -25,14 +26,25 @@ class Friends extends Component {
         }
 
         return (
-            <div>
-                <div>
+            <div className="friendsWrapper">
+                <div className="friends">
                     {this.props.friends.map(friend => (
-                        <div key={friend.id}>
-                            {friend.fname} {friend.lname}
+                        <div className="frienddiv" key={friend.id}>
+                            <figure>
+                                <Link to={`/user/${friend.id}`}>
+                                    <img
+                                        className="somefriend"
+                                        src={friend.imageurl}
+                                        alt={friend.fname}
+                                    />
+                                </Link>
+                                <figcaption>
+                                    {friend.fname} {friend.lname}
+                                </figcaption>
+                            </figure>
                             <button
                                 className="friendbutton"
-                                onClick={e => {
+                                onClick={() => {
                                     this.props.dispatch(unfriend(friend.id));
                                 }}
                             >
@@ -41,13 +53,28 @@ class Friends extends Component {
                         </div>
                     ))}
                 </div>
-                <div>
+                <div className="pendingfriends">
                     {this.props.pendingFriends.map(pendingfriend => (
-                        <div key={pendingfriend.id}>
-                            {pendingfriend.fname} {pendingfriend.lname}
+                        <div
+                            className="pendingfrienddiv"
+                            key={pendingfriend.id}
+                        >
+                            <figure>
+                                <Link to={`/user/${pendingfriend.id}`}>
+                                    <img
+                                        className="somefriend"
+                                        src={pendingfriend.imageurl}
+                                        alt={pendingfriend.fname}
+                                    />
+                                </Link>
+                                <figcaption>
+                                    {pendingfriend.fname} {pendingfriend.lname}
+                                </figcaption>
+                            </figure>
+
                             <button
                                 className="friendbutton"
-                                onClick={e => {
+                                onClick={() => {
                                     this.props.dispatch(
                                         acceptFriendRequests(pendingfriend.id)
                                     );

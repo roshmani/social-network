@@ -12,7 +12,7 @@ module.exports.regUsers = function(fname, lname, email, password, imgurl, bio) {
         lname || null,
         email || null,
         password || null,
-        imgurl || null,
+        imgurl || "/profilepic.png",
         bio || null
     ]);
 };
