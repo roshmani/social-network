@@ -62,12 +62,17 @@ module.exports.updateUserBio = function(bio, userid) {
     return db.query(query, [bio, userid]);
 };
 
-module.exports.updateFriendshipRequest = function(id) {
-    var query = `UPDATE friendships SET status=2 WHERE sender_id=$1 RETURNING *`;
-    return db.query(query, [id]);
+module.exports.updateFriendshipRequest = function(sender_id, receiver_id) {
+    console.log("in update friendreq:", sender_id, receiver_id);
+    var query = `UPDATE friendships SET status=2
+     WHERE (receiver_id=$1 and sender_id=$2)
+     OR (receiver_id= $2 and sender_id=$1) RETURNING *`;
+    return db.query(query, [sender_id, receiver_id]);
 };
 
-module.exports.deleteFriendRequest = function(id) {
-    var query = `DELETE from friendships WHERE sender_id=$1`;
-    return db.query(query, [id]);
+module.exports.deleteFriendRequest = function(sender_id, receiver_id) {
+    var query = `DELETE from friendships
+    WHERE (receiver_id=$1 and sender_id=$2)
+    OR (receiver_id= $2 and sender_id=$1)`;
+    return db.query(query, [sender_id, receiver_id]);
 };

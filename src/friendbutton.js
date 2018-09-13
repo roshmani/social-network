@@ -56,7 +56,7 @@ export default class FriendButton extends Component {
                 this.deleteFriendship();
             } else {
                 axios
-                    .post(`/updateFriendRequest/${this.state.id}`)
+                    .post(`/updateFriendRequest/${this.props.searchedId}`)
                     .then(({ data }) => {
                         this.setState(data);
                         this.changeButtonText();
@@ -86,7 +86,7 @@ export default class FriendButton extends Component {
 
     deleteFriendship() {
         axios
-            .post(`/deleteFriendRequest/${this.state.id}`)
+            .post(`/deleteFriendRequest/${this.props.searchedId}`)
             .then(() => {
                 this.setState({ status: null });
                 this.changeButtonText();

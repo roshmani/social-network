@@ -159,7 +159,7 @@ button {
     margin: 10px 5px;
 }
 .friendbutton {
-    width: 150px;
+    width: 180px;
 }
 .titletxt {
     font-size: 15px;
@@ -232,9 +232,9 @@ aside {
     -webkit-animation: shadow 1s linear forwards;
     -moz-animation: shadow 1s linear forwards;
     animation: shadow 1s linear forwards;
-    -webkit-animation-delay: 0.5s;
-    -moz-animation-delay: 0.5s;
-    animation-delay: 0.5s;
+    -webkit-animation-delay: 0.25s;
+    -moz-animation-delay: 0.25s;
+    animation-delay: 0.25s;
 }
 .fa-edit {
     align-self: center;
@@ -307,18 +307,18 @@ profilepicdisplay img {
     -webkit-box-shadow: 0.25em 0.25em 0.75em 0 #999;
     -moz-box-shadow: 0.25em 0.25em 0.75em 0 #999;
     -o-box-shadow: 0.25em 0.25em 0.75em 0 #999;
-    -webkit-animation: circle 0.5s linear forwards;
-    -moz-animation: circle 0.5s linear forwards;
-    animation: circle 0.5s linear forwards;
+    -webkit-animation: circle 0.25s linear forwards;
+    -moz-animation: circle 0.25s linear forwards;
+    animation: circle 0.25s linear forwards;
     -webkit-animation-delay: 2s;
     -moz-animation-delay: 2s;
     animation-delay: 2s;
-    -webkit-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -ms-transition: all 0.5s ease;
-    -kthtml-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -ms-transition: all 0.25s ease;
+    -kthtml-transition: all 0.25s ease;
+    transition: all 0.25s ease;
 }
 
 @-webkit-keyframes circle {
@@ -353,12 +353,12 @@ profilepicdisplay img:hover {
     -webkit-box-shadow: 0em 0em 1em 0 #999;
     -moz-box-shadow: -0.25em 0.25em 0.75em 0 #999;
     -o-box-shadow: -0.25em 0.25em 0.75em 0 #999;
-    -webkit-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -ms-transition: all 0.5s ease;
-    -kthtml-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -ms-transition: all 0.25s ease;
+    -kthtml-transition: all 0.25s ease;
+    transition: all 0.25s ease;
 }
 
 profilepicdisplay {

@@ -251,8 +251,8 @@ app.post("/addFriend/:searchedId", (req, res) => {
         });
 });
 /*******************************************************************************************************/
-app.post("/deleteFriendRequest/:id", (req, res) => {
-    deleteFriendRequest(req.params.id)
+app.post("/deleteFriendRequest/:searchedId", (req, res) => {
+    deleteFriendRequest(req.session.userId, req.params.searchedId)
         .then(() => {
             res.json({
                 success: true
@@ -266,9 +266,9 @@ app.post("/deleteFriendRequest/:id", (req, res) => {
         });
 });
 /*******************************************************************************************************/
-app.post("/updateFriendRequest/:id", (req, res) => {
-    console.log("update friend request", req.params.id);
-    updateFriendshipRequest(req.params.id)
+app.post("/updateFriendRequest/:searchedId", (req, res) => {
+    console.log("update friend request", req.params.searchedId);
+    updateFriendshipRequest(req.session.userId, req.params.searchedId)
         .then(({ rows }) => {
             const { id, sender_id, receiver_id, status } = rows[0];
             res.json({

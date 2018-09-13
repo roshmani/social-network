@@ -31,6 +31,7 @@ class Friends extends Component {
                         <div key={friend.id}>
                             {friend.fname} {friend.lname}
                             <button
+                                className="friendbutton"
                                 onClick={e => {
                                     this.props.dispatch(unfriend(friend.id));
                                 }}
@@ -45,6 +46,7 @@ class Friends extends Component {
                         <div key={pendingfriend.id}>
                             {pendingfriend.fname} {pendingfriend.lname}
                             <button
+                                className="friendbutton"
                                 onClick={e => {
                                     this.props.dispatch(
                                         acceptFriendRequests(pendingfriend.id)
