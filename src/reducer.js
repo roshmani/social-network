@@ -24,5 +24,9 @@ export function reducer(state = {}, action) {
             friends: state.friends.filter(friend => friend.id != action.id)
         };
     }
+
+    if (action.type == "ONLINE_USERS") {
+        state = { ...state, onlineUsers: action.onlineUsers };
+    }
     return state;
 }

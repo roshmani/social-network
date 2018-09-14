@@ -1,5 +1,6 @@
 /*to use this font*/
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url("https://fonts.googleapis.com/css?family=Berkshire+Swash");
 
 body {
     font-family: montserrat, arial, verdana;
@@ -27,7 +28,8 @@ main {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    width: 60%;
+    padding-left: 65px;
+    width: 408px;
 }
 .signinbtn {
     align-self: flex-end;
@@ -35,7 +37,9 @@ main {
     right: 5px;
 }
 .logobrand {
-    width: 40%;
+    width: 278px;
+    background: #005f53;
+    background: linear-gradient(to right, #f6f1d3, #648880 85%, #293f50);
 }
 /*.welcomediv img {
     flex-shrink: 0;
@@ -58,8 +62,13 @@ header {
     width: 100px;
 }
 .logotxt {
-    padding-bottom: 20px;
-    font-size: 30px;
+    position: absolute;
+    z-index: 2;
+    top: 42%;
+
+    font-family: "Berkshire Swash", cursive;
+    size: 49px;
+    color: white;
 }
 .navbar {
     float: right;

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
-//const server = require("http").server(app);
-//const io = require("socket.io")(server, { origins: "localhost:8080" });
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 const compression = require("compression");
 const { hashPass, checkPass } = require("./PwdEncryption");
 const {
@@ -14,7 +14,8 @@ const {
     getRequestStatus,
     deleteFriendRequest,
     updateFriendshipRequest,
-    getFriendsWannabes
+    getFriendsWannabes,
+    getUsersByIds
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -24,12 +25,14 @@ const cookieSession = require("cookie-session");
 app.use(require("cookie-parser")());
 /*config:body parser*/
 app.use(require("body-parser").json());
-app.use(
-    cookieSession({
-        secret: secret,
-        maxAge: 1000 * 60 * 60 * 24 * 14
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: secret,
+    maxAge: 1000 * 60 * 60 * 24 * 14
+});
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 app.use(csurf());
 app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
@@ -315,13 +318,29 @@ function getUserInfo(req, res, userId) {
         });
 }
 
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("I'm listening.");
 });
 
-/*io.on("connection", socket => {
+let onlineUsers = {};
+
+io.on("connection", function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
-    socket.on("disconnect", () => {
-        console.log(`socket with the id ${socket.id} is now disconnected`);
-    });
-});*/
+    if (!socket.request.session || !socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+    const socketId = socket.id;
+    const userId = socket.request.session.userId;
+    onlineUsers[socketId] = userId;
+    console.log("the user online:", onlineUsers);
+    let arrayOfuserIds = Array.from(new Set(Object.values(onlineUsers)));
+    getUsersByIds(arrayOfuserIds)
+        .then(({ rows }) => {
+            console.log("rows returned as online users", rows);
+            socket.emit("onlineUsers", rows);
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting users by ids:", err);
+        });
+    //socket.broadcast.emit("userJoined", "userid justjoined");
+});

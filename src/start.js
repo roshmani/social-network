@@ -8,8 +8,10 @@ import { createStore, applyMiddleware } from "redux";
 import reduxPromise from "redux-promise";
 import { reducer } from "./reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
-/***************************************************************************/
+/*****************************socket******************************************/
+import { getSocket } from "./socket";
 
+/*****************************************************************************/
 let elem;
 const store = createStore(
     reducer,
@@ -18,11 +20,12 @@ const store = createStore(
 if (location.pathname == "/welcome") {
     elem = <Welcome />;
 } else {
-    elem = (
+    elem = (getSocket(store),
+    (
         <Provider store={store}>
             <SocialMediaApp />
         </Provider>
-    );
+    ));
 }
 
 ReactDOM.render(elem, document.querySelector("main"));

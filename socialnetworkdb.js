@@ -76,3 +76,8 @@ module.exports.deleteFriendRequest = function(sender_id, receiver_id) {
     OR (receiver_id= $2 and sender_id=$1)`;
     return db.query(query, [sender_id, receiver_id]);
 };
+
+module.exports.getUsersByIds = function(arrayOfIds) {
+    const query = `SELECT * FROM users WHERE id = ANY($1)`;
+    return db.query(query, [arrayOfIds]);
+};
