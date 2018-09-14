@@ -6,7 +6,7 @@ class OnlineUsers extends Component {
         super(props);
         this.state = {};
     }
-    componentDidMount() {}
+
     render() {
         if (!this.props.onlineUsers) {
             return null;

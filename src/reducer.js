@@ -28,5 +28,19 @@ export function reducer(state = {}, action) {
     if (action.type == "ONLINE_USERS") {
         state = { ...state, onlineUsers: action.onlineUsers };
     }
+
+    if (action.type == "USER_JOINED") {
+        state = {
+            onlineUsers: [action.joinedUser, ...state.onlineUsers]
+        };
+    }
+    if (action.type == "USER_LEFT") {
+        state = {
+            ...state,
+            onlineUsers: state.onlineUsers.filter(
+                user => user.id != action.leftUserId
+            )
+        };
+    }
     return state;
 }

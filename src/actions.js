@@ -1,7 +1,6 @@
 import axios from "./axios";
 export function getFriendsWannabes() {
     return axios.get("/getFriendsWannabes").then(resp => {
-        console.log("response data", resp.data);
         return {
             type: "GET_FRIENDS_WANNABES",
             friends: resp.data.friends
@@ -36,5 +35,12 @@ export function userJoined(joinedUser) {
     return {
         type: "USER_JOINED",
         joinedUser
+    };
+}
+
+export function userLeft(leftUserId) {
+    return {
+        type: "USER_LEFT",
+        leftUserId
     };
 }

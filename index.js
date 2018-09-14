@@ -332,15 +332,38 @@ io.on("connection", function(socket) {
     const socketId = socket.id;
     const userId = socket.request.session.userId;
     onlineUsers[socketId] = userId;
-    console.log("the user online:", onlineUsers);
-    let arrayOfuserIds = Array.from(new Set(Object.values(onlineUsers)));
+
+    let arrayOfuserIds = Object.values(onlineUsers);
     getUsersByIds(arrayOfuserIds)
         .then(({ rows }) => {
-            console.log("rows returned as online users", rows);
             socket.emit("onlineUsers", rows);
         })
         .catch(function(err) {
             console.log("Error occured in getting users by ids:", err);
         });
-    //socket.broadcast.emit("userJoined", "userid justjoined");
+    console.log(
+        "array :",
+        arrayOfuserIds.indexOf(userId),
+        arrayOfuserIds.length - 1
+    );
+    if (Object.values(onlineUsers).filter(id => id == userId).length == 1) {
+        getUserDetails(userId)
+            .then(({ rows }) => {
+                socket.broadcast.emit("userJoined", rows[0]);
+            })
+            .catch(function(err) {
+                console.log(
+                    "Error occured in getting last joined user details",
+                    err
+                );
+            });
+    }
+
+    socket.on("disconnect", () => {
+        delete onlineUsers[socket.id];
+        //check if the users are in  object.values(userid ) then emit
+        if (!Object.values(onlineUsers).includes(userId)) {
+            socket.broadcast.emit("userLeft", userId);
+        }
+    });
 });
