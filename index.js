@@ -94,9 +94,14 @@ app.get("/Welcome", function(req, res) {
 /******************************************************************************************/
 app.get("/getUserDetails", (req, res) => {
     const userId = req.session.userId;
-    return getUserInfo(req, res, userId).then(userinfo => {
-        res.json(userinfo);
-    });
+    return getUserInfo(req, res, userId)
+        .then(userinfo => {
+            res.json(userinfo);
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting user details:", err);
+            res.json({});
+        });
 });
 /*******************************************************************************************************/
 app.get("/getSearchedUser/:userId", (req, res) => {
@@ -104,9 +109,14 @@ app.get("/getSearchedUser/:userId", (req, res) => {
     if (userId == req.session.userId) {
         res.json({ redirect: true });
     } else {
-        return getUserInfo(req, res, userId).then(userinfo => {
-            res.json(userinfo);
-        });
+        return getUserInfo(req, res, userId)
+            .then(userinfo => {
+                res.json(userinfo);
+            })
+            .catch(function(err) {
+                console.log("Error occured in getting user details:", err);
+                res.json({});
+            });
     }
 });
 /*******************************************************************************************************/
@@ -300,7 +310,8 @@ function getUserInfo(req, res, userId) {
     return getUserDetails(userId)
         .then(results => {
             let imageurl = "/profilepic.png";
-            if (results.rows[0].imageurl != null) {
+
+            if (results.rows[0].imageurl !== null) {
                 imageurl = results.rows[0].imageurl;
             }
 
@@ -341,12 +352,9 @@ io.on("connection", function(socket) {
         .catch(function(err) {
             console.log("Error occured in getting users by ids:", err);
         });
-    console.log(
-        "array :",
-        arrayOfuserIds.indexOf(userId),
-        arrayOfuserIds.length - 1
-    );
+
     if (Object.values(onlineUsers).filter(id => id == userId).length == 1) {
+        /* or use ---if(arrayOfuserIds.indexOf(userId)==arrayOfuserIds.length - 1){*/
         getUserDetails(userId)
             .then(({ rows }) => {
                 socket.broadcast.emit("userJoined", rows[0]);

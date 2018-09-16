@@ -28,62 +28,73 @@ class Friends extends Component {
         return (
             <div className="friendsWrapper">
                 <div className="friends">
-                    {this.props.friends.map(friend => (
-                        <div className="frienddiv" key={friend.id}>
-                            <figure>
-                                <Link to={`/user/${friend.id}`}>
-                                    <img
-                                        className="somefriend"
-                                        src={friend.imageurl}
-                                        alt={friend.fname}
-                                    />
-                                </Link>
-                                <figcaption>
-                                    {friend.fname} {friend.lname}
-                                </figcaption>
-                            </figure>
-                            <button
-                                className="friendbutton"
-                                onClick={() => {
-                                    this.props.dispatch(unfriend(friend.id));
-                                }}
-                            >
-                                End Friendship
-                            </button>
-                        </div>
-                    ))}
+                    <fieldset>
+                        <legend>Friends</legend>
+                        {this.props.friends.map(friend => (
+                            <div className="frienddiv" key={friend.id}>
+                                <figure>
+                                    <Link to={`/user/${friend.id}`}>
+                                        <img
+                                            className="somefriend"
+                                            src={friend.imageurl}
+                                            alt="/profilepic.png"
+                                        />
+                                    </Link>
+                                    <figcaption>
+                                        {friend.fname} {friend.lname}
+                                    </figcaption>
+                                </figure>
+                                <button
+                                    className="friendbutton"
+                                    onClick={() => {
+                                        this.props.dispatch(
+                                            unfriend(friend.id)
+                                        );
+                                    }}
+                                >
+                                    End Friendship
+                                </button>
+                            </div>
+                        ))}
+                    </fieldset>
                 </div>
                 <div className="pendingfriends">
-                    {this.props.pendingFriends.map(pendingfriend => (
-                        <div
-                            className="pendingfrienddiv"
-                            key={pendingfriend.id}
-                        >
-                            <figure>
-                                <Link to={`/user/${pendingfriend.id}`}>
-                                    <img
-                                        className="somefriend"
-                                        src={pendingfriend.imageurl}
-                                        alt={pendingfriend.fname}
-                                    />
-                                </Link>
-                                <figcaption>
-                                    {pendingfriend.fname} {pendingfriend.lname}
-                                </figcaption>
-                            </figure>
-
-                            <button
-                                className="friendbutton"
-                                onClick={() => {
-                                    this.props.dispatch(
-                                        acceptFriendRequests(pendingfriend.id)
-                                    );
-                                }}
+                    <fieldset>
+                        <legend>Pending friend requests</legend>
+                        {this.props.pendingFriends.map(pendingfriend => (
+                            <div
+                                className="pendingfrienddiv"
+                                key={pendingfriend.id}
                             >
-                                Accept Friendship
-                            </button>
-                        </div>
-                    ))}
+                                <figure>
+                                    <Link to={`/user/${pendingfriend.id}`}>
+                                        <img
+                                            className="somefriend"
+                                            src={pendingfriend.imageurl}
+                                            alt={pendingfriend.fname}
+                                        />
+                                    </Link>
+                                    <figcaption>
+                                        {pendingfriend.fname}{" "}
+                                        {pendingfriend.lname}
+                                    </figcaption>
+                                </figure>
+
+                                <button
+                                    className="friendbutton"
+                                    onClick={() => {
+                                        this.props.dispatch(
+                                            acceptFriendRequests(
+                                                pendingfriend.id
+                                            )
+                                        );
+                                    }}
+                                >
+                                    Accept Friendship
+                                </button>
+                            </div>
+                        ))}
+                    </fieldset>
                 </div>
             </div>
         );

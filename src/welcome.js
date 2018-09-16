@@ -10,12 +10,12 @@ export default function Welcome() {
         <HashRouter>
             <div className="landingpagediv">
                 <div className="logobrand">
-                    <h1 className="logotxt">Family Gaggle</h1>
+                    <h1 className="logotxt">Twinnies Gaggle</h1>
                 </div>
                 <div className="welcomediv">
-                    <div className="signinbtn">
+                    <div className="signinbtndiv">
                         <Link to="/login">
-                            <p className="signbtn">Sign In</p>
+                            <p className="signinbtn">Sign In</p>
                         </Link>
                     </div>
                     <div className="componentdiv">
