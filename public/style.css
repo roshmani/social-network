@@ -305,6 +305,18 @@ legend {
     top: 0;
     opacity: 0;
 }
+
+.onlinewrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.chatmsg {
+    width: 400px;
+    height: 100px;
+}
 /*/////////////////////////  profile display //////////////////////////*/
 
 aside {

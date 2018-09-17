@@ -15,7 +15,9 @@ const {
     deleteFriendRequest,
     updateFriendshipRequest,
     getFriendsWannabes,
-    getUsersByIds
+    getUsersByIds,
+    getRecentMessages,
+    saveChatMsg
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -373,5 +375,36 @@ io.on("connection", function(socket) {
         if (!Object.values(onlineUsers).includes(userId)) {
             socket.broadcast.emit("userLeft", userId);
         }
+    });
+    getRecentMessages()
+        .then(({ rows }) => {
+            socket.emit("chatMessages", rows.reverse());
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting chat messages", err);
+        });
+
+    socket.on("chat", message => {
+        saveChatMsg(userId, message)
+            .then(({ rows }) => {
+                let userdet = Object.assign(rows[0]);
+                getUserDetails(userId)
+                    .then(({ rows }) => {
+                        console.log("userdet:", userdet);
+                        io.sockets.emit(
+                            "chatMessage",
+                            Object.assign({}, userdet, rows[0])
+                        );
+                    })
+                    .catch(function(err) {
+                        console.log(
+                            "Error occured in getting last joined user details",
+                            err
+                        );
+                    });
+            })
+            .catch(function(err) {
+                console.log("Error occured in getting chat message", err);
+            });
     });
 });

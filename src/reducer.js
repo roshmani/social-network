@@ -31,6 +31,7 @@ export function reducer(state = {}, action) {
 
     if (action.type == "USER_JOINED") {
         state = {
+            ...state,
             onlineUsers: [action.joinedUser, ...state.onlineUsers]
         };
     }
@@ -41,6 +42,15 @@ export function reducer(state = {}, action) {
                 user => user.id != action.leftUserId
             )
         };
+    }
+
+    if (action.type == "CHAT_MESSAGES") {
+        state = { ...state, messages: action.messages };
+    }
+
+    if (action.type == "CHAT_MESSAGE") {
+        console.log("in add chat");
+        state = { ...state, messages: [...state.messages, action.message] };
     }
     return state;
 }

@@ -44,3 +44,17 @@ export function userLeft(leftUserId) {
         leftUserId
     };
 }
+
+export function chatMessages(messages) {
+    return {
+        type: "CHAT_MESSAGES",
+        messages
+    };
+}
+
+export function chatMessage(message) {
+    return {
+        type: "CHAT_MESSAGE",
+        message
+    };
+}

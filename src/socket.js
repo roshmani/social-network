@@ -1,5 +1,11 @@
 import * as io from "socket.io-client";
-import { onlineUsers, userJoined, userLeft } from "./actions";
+import {
+    onlineUsers,
+    userJoined,
+    userLeft,
+    chatMessage,
+    chatMessages
+} from "./actions";
 let socket;
 export function getSocket(store) {
     if (!socket) {
@@ -14,6 +20,14 @@ export function getSocket(store) {
 
         socket.on("userLeft", leftUserId => {
             store.dispatch(userLeft(leftUserId));
+        });
+        socket.on("chatMessage", message => {
+            store.dispatch(chatMessage(message));
+        });
+
+        socket.on("chatMessages", messages => {
+            console.log("messages in socket.js");
+            store.dispatch(chatMessages(messages));
         });
     }
     return socket;

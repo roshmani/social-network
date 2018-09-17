@@ -81,3 +81,21 @@ module.exports.getUsersByIds = function(arrayOfIds) {
     const query = `SELECT * FROM users WHERE id = ANY($1)`;
     return db.query(query, [arrayOfIds]);
 };
+
+module.exports.getRecentMessages = function() {
+    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,send_at,message
+    FROM chats
+    LEFT JOIN users
+    ON (sender_id = users.id)
+    ORDER BY chatid DESC
+    LIMIT 10`;
+    return db.query(query);
+};
+
+module.exports.saveChatMsg = function(senderid, message) {
+    console.log("in save chat:", message);
+    var query = `INSERT INTO chats(sender_id,message)
+	VALUES($1,$2) RETURNING id as chatid,sender_id,send_at,message`;
+
+    return db.query(query, [senderid || null, message || null]);
+};
