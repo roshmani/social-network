@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "./axios";
+import { emit } from "./socket";
 
 export default class FriendButton extends Component {
     constructor(props) {
@@ -47,6 +48,11 @@ export default class FriendButton extends Component {
                 .then(({ data }) => {
                     this.setState(data);
                     this.changeButtonText();
+                    console.log("SSSSS", receiver_id);
+                    emit("notification", {
+                        notification: "You have a new Friend request!",
+                        receiver_id: this.state.receiver_id
+                    });
                 })
                 .catch(err => {
                     console.log("Error in inserting into frienships:", err);

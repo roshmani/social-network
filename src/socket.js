@@ -29,6 +29,14 @@ export function getSocket(store) {
             console.log("messages in socket.js");
             store.dispatch(chatMessages(messages));
         });
+
+        socket.on("notification", messages => {
+            console.log("messages in socket.js");
+            //store.dispatch(notification(notification));
+        });
     }
     return socket;
+}
+export function emit(event, data) {
+    socket.emit(event, data);
 }

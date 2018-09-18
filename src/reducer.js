@@ -12,7 +12,7 @@ export function reducer(state = {}, action) {
                 if (friend.id == action.id) {
                     return { ...friend, status: 2 };
                 } else {
-                    return { friend };
+                    return friend;
                 }
             })
         }; //ES6

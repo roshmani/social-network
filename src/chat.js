@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getSocket } from "./socket";
+import { emit } from "./socket";
 
 class Chat extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class Chat extends Component {
 
     savechatMessage(e) {
         if (e.which === 13) {
-            getSocket().emit("chat", e.target.value);
+            emit("chat", e.target.value);
             e.target.value = "";
         }
     }

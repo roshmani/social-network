@@ -82,7 +82,7 @@ app.use(express.static("./public"));
 
 app.get("/logout", function(request, response) {
     request.session = null;
-    response.redirect("/");
+    response.redirect("/welcome");
 });
 
 app.get("/Welcome", function(req, res) {
@@ -406,5 +406,13 @@ io.on("connection", function(socket) {
             .catch(function(err) {
                 console.log("Error occured in getting chat message", err);
             });
+    });
+    socket.on("notification", data => {
+        console.log("receiver_id:", data);
+        let receiverSocket = Object.keys(onlineUsers).find(
+            key => onlineUsers[key] === data.receiver_id
+        );
+        console.log("test:", receiverSocket);
+        io.sockets.socket(receiverSocket).emit(data.notification);
     });
 });

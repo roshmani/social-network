@@ -6,6 +6,7 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./Profile";
 import SearchedProfile from "./searchedprofile";
+import Navigation from "./navigation.js";
 import Friends from "./friends";
 import OnlineUsers from "./onlineusers";
 
@@ -74,25 +75,25 @@ export default class SocialMediaApp extends React.Component {
         }
         const { fname, lname, imageUrl, bio, showBio } = this.state;
         return (
-            <div className="mainAppdiv">
-                <div className="headerdiv">
-                    <Logo />
-                    <ProfilePic
-                        imageUrl={imageUrl}
-                        fname={fname}
-                        lname={lname}
-                        clickHandler={this.makeUploaderVisible}
-                    />
-                </div>
-                {this.state.uploaderIsVisible && (
-                    <Uploader
-                        updateImage={this.updateImage}
-                        closeUploader={this.makeUploaderInvisible}
-                    />
-                )}
-
-                <BrowserRouter>
-                    <div>
+            <BrowserRouter>
+                <div>
+                    <div className="mainAppdiv">
+                        <div className="headerdiv">
+                            <Logo />
+                            <ProfilePic
+                                imageUrl={imageUrl}
+                                fname={fname}
+                                lname={lname}
+                                clickHandler={this.makeUploaderVisible}
+                            />
+                            <Navigation />
+                        </div>
+                        {this.state.uploaderIsVisible && (
+                            <Uploader
+                                updateImage={this.updateImage}
+                                closeUploader={this.makeUploaderInvisible}
+                            />
+                        )}
                         <Route
                             exact
                             path="/"
@@ -121,8 +122,8 @@ export default class SocialMediaApp extends React.Component {
                             component={OnlineUsers}
                         />
                     </div>
-                </BrowserRouter>
-            </div>
+                </div>
+            </BrowserRouter>
         );
     }
 }
