@@ -15,20 +15,23 @@ class OnlineUsers extends Component {
         return (
             <div className="onlinewrapper">
                 <div className="onlinefriends">
-                    {this.props.onlineUsers.map(onlineuser => (
-                        <div className="onlineuser" key={onlineuser.id}>
-                            <figure>
-                                <img
-                                    className="somefriend"
-                                    src={onlineuser.imageurl}
-                                    alt={onlineuser.fname}
-                                />
-                                <figcaption>
-                                    {onlineuser.fname} {onlineuser.lname}
-                                </figcaption>
-                            </figure>
-                        </div>
-                    ))}
+                    <fieldset>
+                        <legend>Online Friends</legend>
+                        {this.props.onlineUsers.map(onlineuser => (
+                            <div className="onlineuser" key={onlineuser.id}>
+                                <figure>
+                                    <img
+                                        className="somefriend"
+                                        src={onlineuser.imageurl}
+                                        alt={onlineuser.fname}
+                                    />
+                                    <figcaption>
+                                        {onlineuser.fname} {onlineuser.lname}
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        ))}
+                    </fieldset>
                 </div>
                 <Chat />
             </div>

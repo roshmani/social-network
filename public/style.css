@@ -308,14 +308,29 @@ legend {
 
 .onlinewrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     align-content: flex-start;
 }
-
+.onlinefriends {
+    width: 30%;
+}
 .chatmsg {
-    width: 400px;
+    width: 900px;
     height: 100px;
+}
+.chatMessages {
+    width: 70%;
+    height: 800px;
+    overflow: auto;
+}
+.chats {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+.chat {
+    align-self: center;
 }
 /*/////////////////////////  profile display //////////////////////////*/
 

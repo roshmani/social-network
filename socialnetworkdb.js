@@ -83,7 +83,7 @@ module.exports.getUsersByIds = function(arrayOfIds) {
 };
 
 module.exports.getRecentMessages = function() {
-    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,send_at,message
+    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS OF') as send_at,message
     FROM chats
     LEFT JOIN users
     ON (sender_id = users.id)
@@ -93,9 +93,8 @@ module.exports.getRecentMessages = function() {
 };
 
 module.exports.saveChatMsg = function(senderid, message) {
-    console.log("in save chat:", message);
     var query = `INSERT INTO chats(sender_id,message)
-	VALUES($1,$2) RETURNING id as chatid,sender_id,send_at,message`;
+	VALUES($1,$2) RETURNING id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS OF') as send_at,message`;
 
     return db.query(query, [senderid || null, message || null]);
 };

@@ -6,10 +6,10 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.myRef = React.createRef();
         this.savechatMessage = this.savechatMessage.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
     }
-    componentDidMount() {}
 
     savechatMessage(e) {
         if (e.which === 13) {
@@ -19,10 +19,8 @@ class Chat extends Component {
     }
 
     scrollToBottom() {
-        const scrollHeight = this.element.scrollHeight;
-        const height = this.element.clientHeight;
-        const maxScrollTop = scrollHeight - height;
-        this.element.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+        this.element.scrollTop =
+            this.element.scrollHeight - this.element.clientHeight;
     }
 
     componentDidUpdate() {
@@ -37,29 +35,35 @@ class Chat extends Component {
                 className="chatMessages"
                 ref={element => (this.element = element)}
             >
-                {this.props.messages.map(message => (
-                    <div className="chats" key={message.chatid}>
-                        <figure>
-                            <img
-                                className="somefriend"
-                                src={message.imageurl}
-                                alt={message.fname}
-                            />
-                            <figcaption>
-                                {message.fname} {message.lname}
-                            </figcaption>
-                        </figure>
-                        <div className="chat">
-                            <p>{message.send_at}</p>
-                            <p>{message.message}</p>
+                <fieldset>
+                    <legend>Chat Messages</legend>
+                    {this.props.messages.map(message => (
+                        <div className="chats" key={message.chatid}>
+                            <div className="userprof">
+                                <figure>
+                                    <img
+                                        className="somefriend"
+                                        src={message.imageurl}
+                                        alt={message.fname}
+                                    />
+                                    <figcaption>
+                                        {message.fname} {message.lname}
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div className="chat">
+                                <p>{message.send_at}</p>
+                                <p>{message.message}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
-                <textarea
-                    className="chatmsg"
-                    onKeyDown={this.savechatMessage}
-                    placeholder="enter chat"
-                />
+                    ))}
+
+                    <textarea
+                        className="chatmsg"
+                        onKeyDown={this.savechatMessage}
+                        placeholder="enter chat"
+                    />
+                </fieldset>
             </div>
         );
     }
