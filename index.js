@@ -413,6 +413,9 @@ io.on("connection", function(socket) {
             key => onlineUsers[key] === data.receiver_id
         );
         console.log("test:", receiverSocket);
-        io.sockets.socket(receiverSocket).emit(data.notification);
+        io.sockets.sockets[receiverSocket].emit(
+            "notification",
+            data.notification
+        );
     });
 });

@@ -4,7 +4,8 @@ import {
     userJoined,
     userLeft,
     chatMessage,
-    chatMessages
+    chatMessages,
+    notification
 } from "./actions";
 let socket;
 export function getSocket(store) {
@@ -30,9 +31,9 @@ export function getSocket(store) {
             store.dispatch(chatMessages(messages));
         });
 
-        socket.on("notification", messages => {
+        socket.on("notification", notificationMsg => {
             console.log("messages in socket.js");
-            //store.dispatch(notification(notification));
+            store.dispatch(notification(notificationMsg));
         });
     }
     return socket;

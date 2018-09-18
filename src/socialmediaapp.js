@@ -7,10 +7,12 @@ import Uploader from "./uploader";
 import Profile from "./Profile";
 import SearchedProfile from "./searchedprofile";
 import Navigation from "./navigation.js";
+import Notification from "./notification.js";
 import Friends from "./friends";
 import OnlineUsers from "./onlineusers";
+import { connect } from "react-redux";
 
-export default class SocialMediaApp extends React.Component {
+class SocialMediaApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -77,6 +79,9 @@ export default class SocialMediaApp extends React.Component {
         return (
             <BrowserRouter>
                 <div>
+                    {this.props.notification && (
+                        <Notification notification={this.props.notification} />
+                    )}
                     <div className="mainAppdiv">
                         <div className="headerdiv">
                             <Logo />
@@ -127,3 +132,12 @@ export default class SocialMediaApp extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    console.log("state in map function", state.notification);
+    return {
+        notification: state.notification
+    };
+};
+
+export default connect(mapStateToProps)(SocialMediaApp);

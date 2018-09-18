@@ -49,8 +49,12 @@ export function reducer(state = {}, action) {
     }
 
     if (action.type == "CHAT_MESSAGE") {
-        console.log("in add chat");
         state = { ...state, messages: [...state.messages, action.message] };
+    }
+
+    if (action.type == "NOTIFICATION") {
+        console.log("in notification");
+        state = { ...state, notification: action.notification };
     }
     return state;
 }

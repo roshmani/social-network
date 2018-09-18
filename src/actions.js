@@ -58,3 +58,10 @@ export function chatMessage(message) {
         message
     };
 }
+
+export function notification(notification) {
+    return {
+        type: "NOTIFICATION",
+        notification
+    };
+}
