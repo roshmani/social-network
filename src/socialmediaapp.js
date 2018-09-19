@@ -10,7 +10,7 @@ import Navigation from "./navigation.js";
 import Notification from "./notification.js";
 import Friends from "./friends";
 import OnlineUsers from "./onlineusers";
-import PrivateChat from "./privatechat";
+import MyFriends from "./myfriends";
 import { connect } from "react-redux";
 import { closeNotification } from "./actions.js";
 
@@ -136,11 +136,7 @@ class SocialMediaApp extends React.Component {
                             path="/onlinefriends"
                             component={OnlineUsers}
                         />
-                        <Route
-                            exact
-                            path="/chat/:userId"
-                            component={PrivateChat}
-                        />
+                        <Route path="/myfriends" component={MyFriends} />
                     </div>
                 </div>
             </BrowserRouter>

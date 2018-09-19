@@ -162,6 +162,23 @@ app.get("/getFriendsWannabes", (req, res) => {
         });
 });
 /*******************************************************************************************************/
+app.get("/getPrivateMessages/:receiverid", (req, res) => {
+    getPrivateMessages(req.params.receiverid, req.session.userId)
+        .then(results => {
+            if (results.rows.length > 0) {
+                res.json({
+                    messages: results.rows
+                });
+            } else {
+                res.json({ messages: null });
+            }
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting private chat messages", err);
+        });
+});
+
+/*******************************************************************************************************/
 app.post("/register", (req, res) => {
     if (
         req.body.fname &&
@@ -429,30 +446,26 @@ io.on("connection", function(socket) {
     getFriends(userId)
         .then(results => {
             if (results.rows.length > 0) {
-                socket.emit("onlinefriends", results.rows);
+                socket.emit("onlineFriends", results.rows);
             } else {
-                socket.emit("onlinefriends", null);
+                socket.emit("onlineFriends", null);
             }
         })
         .catch(function(err) {
             console.log("Error occured in getting friends details:", err);
         });
 
-    getPrivateMessages()
-        .then(({ rows }) => {
-            socket.emit("privatechatMessages", rows.reverse());
-        })
-        .catch(function(err) {
-            console.log("Error occured in getting chat messages", err);
-        });
     socket.on("privatechat", message => {
-        savePrivateChatMsg(userId, receiver_id, message)
+        savePrivateChatMsg(userId, message.receiver_id, message)
             .then(({ rows }) => {
                 let userdet = Object.assign(rows[0]);
                 getUserDetails(userId)
                     .then(({ rows }) => {
+                        let receiverSocket = Object.keys(onlineUsers).find(
+                            key => onlineUsers[key] === message.receiver_id
+                        );
                         console.log("userdet:", userdet);
-                        io.sockets.emit(
+                        io.sockets.sockets[receiverSocket].emit(
                             "privatechatMessage",
                             Object.assign({}, userdet, rows[0])
                         );

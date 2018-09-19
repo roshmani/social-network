@@ -72,3 +72,26 @@ export function closeNotification() {
         notification: null
     };
 }
+
+export function onlineFriends(onlineFriends) {
+    return {
+        type: "ONLINE_FRIENDS",
+        onlineFriends
+    };
+}
+
+export function getChatMessages(receiverid) {
+    return axios.get(`/getPrivateMessages/${receiverid}`).then(({ data }) => {
+        return {
+            type: "PRIVATECHAT_MESSAGES",
+            privateMessages: data.privateMessages || []
+        };
+    });
+}
+
+export function privateChatMessage(privateMessage) {
+    return {
+        type: "PRIVATECHAT_MESSAGE",
+        privateMessage
+    };
+}

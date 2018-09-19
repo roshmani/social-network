@@ -5,7 +5,10 @@ import {
     userLeft,
     chatMessage,
     chatMessages,
-    notification
+    notification,
+    onlineFriends,
+    privateChatMessage,
+    privateChatMessages
 } from "./actions";
 let socket;
 export function getSocket(store) {
@@ -34,6 +37,17 @@ export function getSocket(store) {
         socket.on("notification", notificationMsg => {
             console.log("messages in socket.js");
             store.dispatch(notification(notificationMsg));
+        });
+        socket.on("onlineFriends", data => {
+            store.dispatch(onlineFriends(data));
+        });
+        socket.on("privateChatMessage", message => {
+            store.dispatch(privateChatMessage(message));
+        });
+
+        socket.on("privateChatMessages", messages => {
+            console.log("messages in socket.js");
+            store.dispatch(privateChatMessages(messages));
         });
     }
     return socket;

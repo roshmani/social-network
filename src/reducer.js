@@ -1,4 +1,9 @@
-export function reducer(state = {}, action) {
+const INITIAL_STATE = {
+    messages: [],
+    privateMessages: []
+};
+
+export function reducer(state = INITIAL_STATE, action) {
     if (action.type == "GET_FRIENDS_WANNABES") {
         state = Object.assign({}, state, {
             friends: action.friends
@@ -60,6 +65,20 @@ export function reducer(state = {}, action) {
     if (action.type == "CLOSE_NOTIFICATION") {
         console.log("in notification");
         state = { ...state, notification: action.notification };
+    }
+
+    if (action.type == "ONLINE_FRIENDS") {
+        state = { ...state, onlineFriends: action.onlineFriends };
+    }
+    if (action.type == "PRIVATECHAT_MESSAGES") {
+        state = { ...state, privateMessages: action.privateMessages };
+    }
+
+    if (action.type == "PRIVATECHAT_MESSAGE") {
+        state = {
+            ...state,
+            privateMessages: [...state.privateMessage, action.privateMessage]
+        };
     }
     return state;
 }
