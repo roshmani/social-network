@@ -65,3 +65,10 @@ export function notification(notification) {
         notification
     };
 }
+
+export function closeNotification() {
+    return {
+        type: "CLOSE_NOTIFICATION",
+        notification: null
+    };
+}

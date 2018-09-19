@@ -10,7 +10,9 @@ import Navigation from "./navigation.js";
 import Notification from "./notification.js";
 import Friends from "./friends";
 import OnlineUsers from "./onlineusers";
+import PrivateChat from "./privatechat";
 import { connect } from "react-redux";
+import { closeNotification } from "./actions.js";
 
 class SocialMediaApp extends React.Component {
     constructor(props) {
@@ -21,6 +23,7 @@ class SocialMediaApp extends React.Component {
         this.makeUploaderInvisible = this.makeUploaderInvisible.bind(this);
         this.toggleBio = this.toggleBio.bind(this);
         this.setBio = this.setBio.bind(this);
+        this.closeNotification = this.closeNotification.bind(this);
     }
     componentDidMount() {
         axios.get("/getUserDetails").then(({ data }) => {
@@ -71,6 +74,10 @@ class SocialMediaApp extends React.Component {
                 });
         }
     }
+
+    closeNotification() {
+        this.props.dispatch(closeNotification());
+    }
     render() {
         if (!this.state.id) {
             return <div>Loading...</div>;
@@ -80,7 +87,10 @@ class SocialMediaApp extends React.Component {
             <BrowserRouter>
                 <div>
                     {this.props.notification && (
-                        <Notification notification={this.props.notification} />
+                        <Notification
+                            notification={this.props.notification}
+                            closeNotification={this.closeNotification}
+                        />
                     )}
                     <div className="mainAppdiv">
                         <div className="headerdiv">
@@ -125,6 +135,11 @@ class SocialMediaApp extends React.Component {
                             exact
                             path="/onlinefriends"
                             component={OnlineUsers}
+                        />
+                        <Route
+                            exact
+                            path="/chat/:userId"
+                            component={PrivateChat}
                         />
                     </div>
                 </div>

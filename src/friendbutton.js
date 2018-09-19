@@ -48,7 +48,6 @@ export default class FriendButton extends Component {
                 .then(({ data }) => {
                     this.setState(data);
                     this.changeButtonText();
-                    console.log("SSSSS", receiver_id);
                     emit("notification", {
                         notification: "You have a new Friend request!",
                         receiver_id: this.state.receiver_id

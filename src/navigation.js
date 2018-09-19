@@ -13,6 +13,9 @@ export default function Navigation() {
                         <Link to="/onlinefriends">Online Friends</Link>
                     </li>
                     <li>
+                        <Link to="/privatechat">Chat</Link>
+                    </li>
+                    <li>
                         <a href="/logout">Logout</a>
                     </li>
                 </ul>

@@ -52,6 +52,15 @@ module.exports.getFriendsWannabes = function(receiverid) {
     return db.query(query, [receiverid]);
 };
 
+module.exports.getFriends = function(receiverid) {
+    var query = ` SELECT users.id, fname, lname, imageurl, status
+    FROM friendships
+    JOIN users
+    ON (status = 2 AND receiver_id = $1 AND sender_id = users.id)
+    OR (status = 2 AND sender_id = $1 AND receiver_id = users.id)`;
+    return db.query(query, [receiverid]);
+};
+
 module.exports.updateProfilePic = function(imgurl, userid) {
     var query = `UPDATE users SET imageurl=$1 WHERE id=$2 RETURNING imageurl`;
     return db.query(query, [imgurl, userid]);
@@ -83,7 +92,7 @@ module.exports.getUsersByIds = function(arrayOfIds) {
 };
 
 module.exports.getRecentMessages = function() {
-    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS OF') as send_at,message
+    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message
     FROM chats
     LEFT JOIN users
     ON (sender_id = users.id)
@@ -94,7 +103,29 @@ module.exports.getRecentMessages = function() {
 
 module.exports.saveChatMsg = function(senderid, message) {
     var query = `INSERT INTO chats(sender_id,message)
-	VALUES($1,$2) RETURNING id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS OF') as send_at,message`;
+	VALUES($1,$2) RETURNING id as chatid,sender_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message`;
 
     return db.query(query, [senderid || null, message || null]);
+};
+
+module.exports.getPrivateMessages = function(receiverid) {
+    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,receiver_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message
+    FROM chats
+    LEFT JOIN users
+    ON ( receiver_id = $1 AND sender_id = users.id)
+    OR ( sender_id = $1 AND receiver_id = users.id)
+    ORDER BY chatid DESC
+    LIMIT 10`;
+    return db.query(query, receiverid || null);
+};
+
+module.exports.savePrivateChatMsg = function(senderid, receiverid, message) {
+    var query = `INSERT INTO privatechats(sender_id,receiver_id,message)
+	VALUES($1,$2,$3) RETURNING id as chatid,sender_id,receiver_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message`;
+
+    return db.query(query, [
+        senderid || null,
+        receiverid || null,
+        message || null
+    ]);
 };

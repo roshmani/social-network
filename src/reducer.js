@@ -56,5 +56,10 @@ export function reducer(state = {}, action) {
         console.log("in notification");
         state = { ...state, notification: action.notification };
     }
+
+    if (action.type == "CLOSE_NOTIFICATION") {
+        console.log("in notification");
+        state = { ...state, notification: action.notification };
+    }
     return state;
 }

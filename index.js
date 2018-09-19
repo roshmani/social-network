@@ -17,7 +17,10 @@ const {
     getFriendsWannabes,
     getUsersByIds,
     getRecentMessages,
-    saveChatMsg
+    saveChatMsg,
+    getPrivateMessages,
+    savePrivateChatMsg,
+    getFriends
 } = require("./socialnetworkdb");
 const s3 = require("./s3");
 const config = require("./config");
@@ -376,6 +379,8 @@ io.on("connection", function(socket) {
             socket.broadcast.emit("userLeft", userId);
         }
     });
+
+    /********************Group Chat***********************************/
     getRecentMessages()
         .then(({ rows }) => {
             socket.emit("chatMessages", rows.reverse());
@@ -407,6 +412,8 @@ io.on("connection", function(socket) {
                 console.log("Error occured in getting chat message", err);
             });
     });
+
+    /**********************Notification******************************/
     socket.on("notification", data => {
         console.log("receiver_id:", data);
         let receiverSocket = Object.keys(onlineUsers).find(
@@ -417,5 +424,48 @@ io.on("connection", function(socket) {
             "notification",
             data.notification
         );
+    });
+    /*******************Private Chat*******************************/
+    getFriends(userId)
+        .then(results => {
+            if (results.rows.length > 0) {
+                socket.emit("onlinefriends", results.rows);
+            } else {
+                socket.emit("onlinefriends", null);
+            }
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting friends details:", err);
+        });
+
+    getPrivateMessages()
+        .then(({ rows }) => {
+            socket.emit("privatechatMessages", rows.reverse());
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting chat messages", err);
+        });
+    socket.on("privatechat", message => {
+        savePrivateChatMsg(userId, receiver_id, message)
+            .then(({ rows }) => {
+                let userdet = Object.assign(rows[0]);
+                getUserDetails(userId)
+                    .then(({ rows }) => {
+                        console.log("userdet:", userdet);
+                        io.sockets.emit(
+                            "privatechatMessage",
+                            Object.assign({}, userdet, rows[0])
+                        );
+                    })
+                    .catch(function(err) {
+                        console.log(
+                            "Error occured in getting last joined user details",
+                            err
+                        );
+                    });
+            })
+            .catch(function(err) {
+                console.log("Error occured in getting chat message", err);
+            });
     });
 });
