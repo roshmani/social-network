@@ -18,7 +18,7 @@ const {
     getUsersByIds,
     getRecentMessages,
     saveChatMsg,
-    getPrivateMessages,
+    getPrivateChat,
     savePrivateChatMsg,
     getFriends
 } = require("./socialnetworkdb");
@@ -163,14 +163,14 @@ app.get("/getFriendsWannabes", (req, res) => {
 });
 /*******************************************************************************************************/
 app.get("/getPrivateMessages/:receiverid", (req, res) => {
-    getPrivateMessages(req.params.receiverid, req.session.userId)
+    getPrivateChat(req.params.receiverid, req.session.userId)
         .then(results => {
             if (results.rows.length > 0) {
                 res.json({
-                    messages: results.rows
+                    privateMessages: results.rows
                 });
             } else {
-                res.json({ messages: null });
+                res.json({ privateMessages: [] });
             }
         })
         .catch(function(err) {
@@ -434,7 +434,7 @@ io.on("connection", function(socket) {
     socket.on("notification", data => {
         console.log("receiver_id:", data);
         let receiverSocket = Object.keys(onlineUsers).find(
-            key => onlineUsers[key] === data.receiver_id
+            key => onlineUsers[key] == data.receiver_id
         );
         console.log("test:", receiverSocket);
         io.sockets.sockets[receiverSocket].emit(
@@ -455,24 +455,34 @@ io.on("connection", function(socket) {
             console.log("Error occured in getting friends details:", err);
         });
 
-    socket.on("privatechat", message => {
-        savePrivateChatMsg(userId, message.receiver_id, message)
+    socket.on("privateChat", message => {
+        console.log(" in private chat");
+        savePrivateChatMsg(userId, message.receiver_id, message.message)
             .then(({ rows }) => {
                 let userdet = Object.assign(rows[0]);
                 getUserDetails(userId)
                     .then(({ rows }) => {
                         let receiverSocket = Object.keys(onlineUsers).find(
-                            key => onlineUsers[key] === message.receiver_id
+                            key => onlineUsers[key] == message.receiver_id
                         );
-                        console.log("userdet:", userdet);
-                        io.sockets.sockets[receiverSocket].emit(
-                            "privatechatMessage",
-                            Object.assign({}, userdet, rows[0])
+                        console.log("socket:", receiverSocket);
+                        console.log("online users:", onlineUsers);
+                        const privateMessage = Object.assign(
+                            {},
+                            userdet,
+                            rows[0]
                         );
+                        if (receiverSocket) {
+                            console.log("in private chat:");
+                            io.sockets.sockets[receiverSocket].emit(
+                                "privateChatMessage",
+                                privateMessage
+                            );
+                        }
                     })
                     .catch(function(err) {
                         console.log(
-                            "Error occured in getting last joined user details",
+                            "Error occured in getting private chat message",
                             err
                         );
                     });

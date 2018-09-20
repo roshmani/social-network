@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PrivateChatWindow from "./privatewindow";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 class MyFriends extends Component {
     constructor(props) {
@@ -38,12 +38,7 @@ class MyFriends extends Component {
                         ))}
                     </fieldset>
                 </div>
-                <BrowserRouter>
-                    <Route
-                        path="/myfriends/:id"
-                        component={PrivateChatWindow}
-                    />
-                </BrowserRouter>
+                <Route path="/myfriends/:id" component={PrivateChatWindow} />
             </div>
         );
     }

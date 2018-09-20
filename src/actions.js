@@ -81,15 +81,23 @@ export function onlineFriends(onlineFriends) {
 }
 
 export function getChatMessages(receiverid) {
-    return axios.get(`/getPrivateMessages/${receiverid}`).then(({ data }) => {
-        return {
-            type: "PRIVATECHAT_MESSAGES",
-            privateMessages: data.privateMessages || []
-        };
-    });
+    console.log("id of rec:", receiverid);
+    return axios
+        .get("/getPrivateMessages/" + receiverid)
+        .then(({ data }) => {
+            console.log("private chat:", data.privateMessages);
+            return {
+                type: "PRIVATECHAT_MESSAGES",
+                privateMessages: data.privateMessages
+            };
+        })
+        .catch(function(err) {
+            console.log("Error occured in getting private messages :", err);
+        });
 }
 
 export function privateChatMessage(privateMessage) {
+    console.log("in action:", privateMessage);
     return {
         type: "PRIVATECHAT_MESSAGE",
         privateMessage

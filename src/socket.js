@@ -7,8 +7,7 @@ import {
     chatMessages,
     notification,
     onlineFriends,
-    privateChatMessage,
-    privateChatMessages
+    privateChatMessage
 } from "./actions";
 let socket;
 export function getSocket(store) {
@@ -38,16 +37,14 @@ export function getSocket(store) {
             console.log("messages in socket.js");
             store.dispatch(notification(notificationMsg));
         });
+
         socket.on("onlineFriends", data => {
             store.dispatch(onlineFriends(data));
         });
-        socket.on("privateChatMessage", message => {
-            store.dispatch(privateChatMessage(message));
-        });
 
-        socket.on("privateChatMessages", messages => {
-            console.log("messages in socket.js");
-            store.dispatch(privateChatMessages(messages));
+        socket.on("privateChatMessage", message => {
+            console.log("in socket js private chat message:", message);
+            store.dispatch(privateChatMessage(message));
         });
     }
     return socket;

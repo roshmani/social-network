@@ -108,15 +108,16 @@ module.exports.saveChatMsg = function(senderid, message) {
     return db.query(query, [senderid || null, message || null]);
 };
 
-module.exports.getPrivateMessages = function(receiverid, senderid) {
-    const query = `SELECT users.id,fname, lname, imageurl,chats.id as chatid,sender_id,receiver_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message
-    FROM privatechats
-    LEFT JOIN users
-    ON ( receiver_id = $1 AND sender_id = $2)
-    OR ( sender_id = $1 AND receiver_id = $2)
+module.exports.getPrivateChat = function(receiverid, senderid) {
+    console.log("in get privatechat");
+    const query = `SELECT users.id,fname, lname, imageurl,pc.id as chatid,sender_id,receiver_id,to_char(send_at,'Day, DD-MM-YYYY HH12:MI:SS') as send_at,message
+    FROM privatechats as pc
+    JOIN users
+    ON (users.id=pc.sender_id AND receiver_id = $1 AND sender_id = $2)
+    OR (users.id=pc.sender_id AND sender_id = $1 AND receiver_id = $2)
     ORDER BY chatid DESC
     LIMIT 10`;
-    return db.query(query, receiverid || null, senderid || null);
+    return db.query(query, [receiverid || null, senderid || null]);
 };
 
 module.exports.savePrivateChatMsg = function(senderid, receiverid, message) {

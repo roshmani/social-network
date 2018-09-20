@@ -13,14 +13,31 @@ class PrivateChatWindow extends Component {
 
     componentDidMount() {
         console.log("private chat");
-        this.props.dispatch(getChatMessages(this.props.match.params.userId));
+        console.log("userid", this.props.match.params.id);
+        this.props.dispatch(getChatMessages(this.props.match.params.id));
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (prevState.id != nextProps.match.params.id) {
+            return {
+                theId: nextProps.match.params.id
+            };
+        }
+        return null;
+    }
+
+    componentDidUpdate() {
+        if (this.state.theId) {
+            this.props.dispatch(getChatMessages(this.state.theId));
+        }
     }
 
     savechatMessage(e) {
+        console.log("userid", this.props.match.params.id);
         if (e.which === 13) {
-            emit("privatechat", {
+            emit("privateChat", {
                 message: e.target.value,
-                receiver_id: this.props.match.params.userId
+                receiver_id: this.props.match.params.id
             });
             e.target.value = "";
         }
@@ -35,8 +52,8 @@ class PrivateChatWindow extends Component {
         this.scrollToBottom();
     }
     render() {
-        if (!this.props.messages) {
-            console.log("returning null", this.props.messages);
+        console.log("in render:", this.props.privateMessages);
+        if (!this.props.privateMessages) {
             return null;
         }
         return (
@@ -46,7 +63,7 @@ class PrivateChatWindow extends Component {
             >
                 <fieldset>
                     <legend>Chat Messages</legend>
-                    {this.props.messages.map(message => (
+                    {this.props.privateMessages.map(message => (
                         <div className="chats" key={message.chatid}>
                             <div className="userprof">
                                 <figure>
@@ -80,8 +97,7 @@ class PrivateChatWindow extends Component {
 
 const mapPrivateChatMessagestoProps = state => {
     return {
-        onlineFriends: state.onlineFriends,
-        messages: state.privateMessages
+        privateMessages: state.privateMessages
     };
 };
 

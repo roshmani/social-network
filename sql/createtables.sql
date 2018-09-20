@@ -30,7 +30,7 @@ CREATE TABLE chats(
 CREATE TABLE privatechats(
     id SERIAL PRIMARY KEY,
     sender_id INTEGER NOT NULL REFERENCES users(id),
-    receiver_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL REFERENCES users(id),
     send_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     message VARCHAR(1000) not null
 );

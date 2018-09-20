@@ -63,7 +63,6 @@ export function reducer(state = INITIAL_STATE, action) {
     }
 
     if (action.type == "CLOSE_NOTIFICATION") {
-        console.log("in notification");
         state = { ...state, notification: action.notification };
     }
 
@@ -71,13 +70,15 @@ export function reducer(state = INITIAL_STATE, action) {
         state = { ...state, onlineFriends: action.onlineFriends };
     }
     if (action.type == "PRIVATECHAT_MESSAGES") {
+        console.log("in messages privat", action.privateMessages);
         state = { ...state, privateMessages: action.privateMessages };
     }
 
     if (action.type == "PRIVATECHAT_MESSAGE") {
+        console.log("in reducer private_chatmesS:", action.privateMessage);
         state = {
             ...state,
-            privateMessages: [...state.privateMessage, action.privateMessage]
+            privateMessages: [...state.privateMessages, action.privateMessage]
         };
     }
     return state;
