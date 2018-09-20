@@ -81,11 +81,9 @@ export function onlineFriends(onlineFriends) {
 }
 
 export function getChatMessages(receiverid) {
-    console.log("id of rec:", receiverid);
     return axios
         .get("/getPrivateMessages/" + receiverid)
         .then(({ data }) => {
-            console.log("private chat:", data.privateMessages);
             return {
                 type: "PRIVATECHAT_MESSAGES",
                 privateMessages: data.privateMessages

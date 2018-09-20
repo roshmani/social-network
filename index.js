@@ -437,10 +437,12 @@ io.on("connection", function(socket) {
             key => onlineUsers[key] == data.receiver_id
         );
         console.log("test:", receiverSocket);
-        io.sockets.sockets[receiverSocket].emit(
-            "notification",
-            data.notification
-        );
+        if (receiverSocket) {
+            io.sockets.sockets[receiverSocket].emit(
+                "notification",
+                data.notification
+            );
+        }
     });
     /*******************Private Chat*******************************/
     getFriends(userId)
@@ -473,12 +475,12 @@ io.on("connection", function(socket) {
                             rows[0]
                         );
                         if (receiverSocket) {
-                            console.log("in private chat:");
                             io.sockets.sockets[receiverSocket].emit(
                                 "privateChatMessage",
                                 privateMessage
                             );
                         }
+                        socket.emit("privateChatMessage", privateMessage);
                     })
                     .catch(function(err) {
                         console.log(

@@ -12,13 +12,12 @@ class PrivateChatWindow extends Component {
     }
 
     componentDidMount() {
-        console.log("private chat");
-        console.log("userid", this.props.match.params.id);
         this.props.dispatch(getChatMessages(this.props.match.params.id));
+        this.setState({ otherUserId: this.props.match.params.id });
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (prevState.id != nextProps.match.params.id) {
+        if (prevState.otherUserId != nextProps.match.params.id) {
             return {
                 theId: nextProps.match.params.id
             };
@@ -27,8 +26,10 @@ class PrivateChatWindow extends Component {
     }
 
     componentDidUpdate() {
+        this.scrollToBottom();
         if (this.state.theId) {
             this.props.dispatch(getChatMessages(this.state.theId));
+            this.setState({ otherUserId: this.state.theId, theId: null });
         }
     }
 
@@ -48,9 +49,6 @@ class PrivateChatWindow extends Component {
             this.element.scrollHeight - this.element.clientHeight;
     }
 
-    componentDidUpdate() {
-        this.scrollToBottom();
-    }
     render() {
         console.log("in render:", this.props.privateMessages);
         if (!this.props.privateMessages) {

@@ -70,12 +70,10 @@ export function reducer(state = INITIAL_STATE, action) {
         state = { ...state, onlineFriends: action.onlineFriends };
     }
     if (action.type == "PRIVATECHAT_MESSAGES") {
-        console.log("in messages privat", action.privateMessages);
         state = { ...state, privateMessages: action.privateMessages };
     }
 
     if (action.type == "PRIVATECHAT_MESSAGE") {
-        console.log("in reducer private_chatmesS:", action.privateMessage);
         state = {
             ...state,
             privateMessages: [...state.privateMessages, action.privateMessage]

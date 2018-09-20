@@ -13,15 +13,6 @@ export default class SearchedProfile extends Component {
         this.fetchData(this.props.match.params.userId);
     }
 
-    /*componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.userId != this.props.match.params.userId) {
-            //Fetch user 10 info (the this.props.match.params.id)
-            this.fetchData(nextProps.match.params.userId);
-        } else {
-            this.props.history.push("/");
-        }
-    }*/
-
     fetchData(userId) {
         axios
             .get(`/getSearchedUser/${userId}`)
