@@ -190,7 +190,7 @@ main {
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
     padding: 20px 30px;
     width: 50%;
-    margin: 20% 10% 30% 20%;
+    margin-left: 20%;
     /*stacking fieldsets above each other*/
     position: relative;
     text-align: center !important;
